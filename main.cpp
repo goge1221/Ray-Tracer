@@ -19,15 +19,13 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     }
 }
 
-color ray_color(const ray& r) {
+color ray_color(const ray& r, const color& background_color) {
     auto t = hit_sphere(point3(0,0,-1), 0.5, r);
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
         return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
     }
-    vec3 unit_direction = unit_vector(r.direction());
-    t = 0.5*(unit_direction.y() + 1.0);
-    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+    return background_color;
 }
 
 
@@ -38,8 +36,8 @@ int main() {
 
     camera cam = xmlParser.get_camera();
 
-    int image_width = cam.get_image_width();
-    int image_height = cam.get_image_height();
+    int image_width = static_cast<int>(cam.get_image_width());
+    int image_height = static_cast<int>(cam.get_image_height());
 
     // Render
     std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
@@ -50,7 +48,7 @@ int main() {
             auto u = double(i) / (image_width-1);
             auto v = double(j) / (image_height-1);
             ray r = cam.get_ray(u, v);
-            color pixel_color = ray_color(r);
+            color pixel_color = ray_color(r, xmlParser.get_background_color());
             write_color(std::cout, pixel_color);
         }
     }

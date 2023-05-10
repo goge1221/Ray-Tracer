@@ -91,5 +91,9 @@ camera XMLParser::get_camera() {
     return camera;
 }
 
+color XMLParser::get_background_color() {
+    return background_color;
+}
+
 XMLParser::XMLParser() = default;
 

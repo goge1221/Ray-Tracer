@@ -25,6 +25,7 @@ public:
     XMLParser();
     void load_xml_File(const std::string&);
     class camera get_camera();
+    color get_background_color();
 
 };
 
