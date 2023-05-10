@@ -17,19 +17,15 @@ private:
     vec3 vertical;
     vec3 up;
     vec3 look_at;
-    double camera_angle;
-    double image_width;
-    double image_height;
+    double camera_angle = 40.0;
+    double image_width = 200;
+    double image_height = 200;
     double aspect_ratio = 5.0;
     double viewport_height = 0.0;
     double viewport_width = 0.0;
     const double pi = 3.1415926535897932385;
 
 public:
-
-    ray get_ray(double u, double v) const {
-        return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
-    }
 
     void set_position(point3& received_camera_position){
         camera_position = received_camera_position;
@@ -46,6 +42,12 @@ public:
     void set_camera_angle(double angle){
         camera_angle = angle;
     }
+
+
+    ray get_ray(double u, double v) const {
+        return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
+    }
+
 
     void initialize_camera(double horizontal_res, double vertical_res){
         aspect_ratio = horizontal_res / vertical_res;
@@ -77,11 +79,5 @@ public:
     }
 
 };
-
-inline double clamp(double x, double min, double max){
-    if (x < min) return min;
-    if (x > max) return max;
-    return x;
-}
 
 #endif
