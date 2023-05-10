@@ -11,19 +11,19 @@
 class camera {
 public:
 
-    double aspect_ratio = 0.0;
-    double viewport_height = 2.0;
+    double aspect_ratio = 5.0;
+    double viewport_height = 0.0;
     double viewport_width = 0.0;
-    double focal_length = 1.0;
+    const double pi = 3.1415926535897932385;
 
     camera()= default;
 
     ray get_ray(double u, double v) const {
-        return {origin, lower_left_corner + u*horizontal + v*vertical - origin};
+        return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
     }
 
-    void set_position(vec3& camera_position){
-        position = camera_position;
+    void set_position(point3& received_camera_position){
+        camera_position = received_camera_position;
     }
 
     void set_look_at(vec3& look_at_input){
@@ -44,10 +44,18 @@ public:
         image_width = horizontal_res;
         image_height = vertical_res;
 
-        origin = point3(0, 0, 0);
-        horizontal = vec3(viewport_width, 0.0, 0.0);
-        vertical = vec3(0.0, viewport_height, 0.0);
-        lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
+        auto theta = camera_angle * pi / 180.0;
+        auto h = tan(theta/2);
+        viewport_height = 2.0 * h;
+        viewport_width = aspect_ratio * viewport_height;
+
+        auto w = unit_vector(camera_position - look_at);
+        auto u = unit_vector(cross(up, w));
+        auto v = cross(w, u);
+
+        horizontal = viewport_width * u;
+        vertical = viewport_height * v;
+        lower_left_corner = camera_position - horizontal/2 - vertical/2 - w;
 
     }
 
@@ -62,12 +70,11 @@ public:
 
 
 private:
-    point3 origin;
+    point3 camera_position;
     point3 lower_left_corner;
     vec3 horizontal;
     vec3 vertical;
     vec3 up;
-    vec3 position;
     vec3 look_at;
     double camera_angle;
     double image_width;

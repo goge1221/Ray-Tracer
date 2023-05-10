@@ -49,7 +49,7 @@ void XMLParser::parse_camera_informations(XMLElement* scene_element){
         position_element->QueryFloatAttribute("y", &y);
         position_element->QueryFloatAttribute("z", &z);
     }
-    vec3 camera_position(x, y, z);
+    point3 camera_position(x, y, z);
     camera.set_position(camera_position);
 
     XMLElement* look_at_element = camera_element->FirstChildElement("lookat");
