@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "color.h"
-#include "vec3.h"
-#include "ray.h"
+#include "headers/color.h"
+#include "headers/vec3.h"
+#include "headers/ray.h"
 
 color ray_color(const ray& r){
     vec3 unit_direction = unit_vector(r.direction());

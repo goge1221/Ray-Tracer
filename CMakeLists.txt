@@ -3,4 +3,4 @@ project(Lab_3)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Lab_3 main.cpp vec3.h color.h ray.h)
+add_executable(Lab_3 main.cpp headers/vec3.h headers/color.h headers/ray.h)
