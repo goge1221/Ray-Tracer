@@ -9,14 +9,23 @@
 #include "vec3.h"
 
 class camera {
-public:
 
+private:
+    point3 camera_position;
+    point3 lower_left_corner;
+    vec3 horizontal;
+    vec3 vertical;
+    vec3 up;
+    vec3 look_at;
+    double camera_angle;
+    double image_width;
+    double image_height;
     double aspect_ratio = 5.0;
     double viewport_height = 0.0;
     double viewport_width = 0.0;
     const double pi = 3.1415926535897932385;
 
-    camera()= default;
+public:
 
     ray get_ray(double u, double v) const {
         return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
@@ -66,19 +75,6 @@ public:
     double get_image_height() const{
         return image_height;
     }
-
-
-
-private:
-    point3 camera_position;
-    point3 lower_left_corner;
-    vec3 horizontal;
-    vec3 vertical;
-    vec3 up;
-    vec3 look_at;
-    double camera_angle;
-    double image_width;
-    double image_height;
 
 };
 
