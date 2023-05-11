@@ -43,7 +43,6 @@ public:
         camera_angle = angle;
     }
 
-
     ray get_ray(double u, double v) const {
         return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
     }
@@ -51,7 +50,6 @@ public:
 
     void initialize_camera(double horizontal_res, double vertical_res){
         aspect_ratio = horizontal_res / vertical_res;
-        viewport_width = aspect_ratio * viewport_height;
         image_width = horizontal_res;
         image_height = vertical_res;
 
