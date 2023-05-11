@@ -54,9 +54,9 @@ public:
         image_height = vertical_res;
 
         auto theta = camera_angle * pi / 180.0;
-        auto h = tan(theta/2);
-        viewport_height = 2.0 * h;
-        viewport_width = aspect_ratio * viewport_height;
+        auto h = tan(theta);
+        viewport_width = 2.0 * h;
+        viewport_height = viewport_width / aspect_ratio;
 
         auto w = unit_vector(camera_position - look_at);
         auto u = unit_vector(cross(up, w));
