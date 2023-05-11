@@ -5,8 +5,6 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "../headers/color.h"
-
 class Material{
 
 private:

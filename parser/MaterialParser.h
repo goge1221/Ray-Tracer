@@ -11,7 +11,7 @@ class MaterialParser {
 
 public:
 
-    static Material get_material(XMLElement *sphereElement, Material &material) {
+    static void get_material(XMLElement *sphereElement, Material &material) {
 
         XMLElement *materialElement = sphereElement->FirstChildElement("material_solid");
 
