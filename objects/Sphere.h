@@ -12,9 +12,9 @@ class Sphere {
 public:
     Sphere(double radius, const point3 &position) : radius(radius), position(position) {}
 
-    double get_radius() { return radius; }
+    double get_radius() const { return radius; }
 
-    point3 get_position() { return position; }
+    point3 get_position() const { return position; }
 
 
 private:

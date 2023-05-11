@@ -19,8 +19,15 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     }
 }
 
-color ray_color(const ray& r, const color& background_color) {
-    auto t = hit_sphere(point3(0,0,-3), 1, r);
+color ray_color(const ray& r, const color& background_color, const std::vector<Sphere>&spheres) {
+    auto t = 0.0;
+
+    for (const auto & sphere : spheres) {
+        auto b = hit_sphere(sphere.get_position(), sphere.get_radius(), r);
+        if (b > 0.0)
+            t = b;
+    }
+
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
         return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
@@ -39,8 +46,10 @@ int main() {
     int image_width = static_cast<int>(cam.get_image_width());
     int image_height = static_cast<int>(cam.get_image_height());
 
+    std::vector<Sphere>spheres = xmlParser.get_scene_spheres();
+
     // Render
-    std::cout << "P3\n" << image_width << " " << image_height << "\n";
+    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
 
     for (int j = image_height-1; j >= 0; --j) {
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
@@ -48,11 +57,10 @@ int main() {
             auto u = double(i) / (image_width-1);
             auto v = double(j) / (image_height-1);
             ray r = cam.get_ray(u, v);
-            color pixel_color = ray_color(r, xmlParser.get_background_color());
+            color pixel_color = ray_color(r, xmlParser.get_background_color(), spheres);
             write_color(std::cout, pixel_color);
         }
     }
-
     std::cerr << "\nDone.\n";
 }
 
