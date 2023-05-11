@@ -27,13 +27,13 @@ public:
 private:
     static void parseColor(XMLElement *materialElement, Material &material) {
         XMLElement *colorElement = materialElement->FirstChildElement("color");
-        float x = 0.0, y = 0.0, z = 0.0;
+        double r = 0.0, g = 0.0, b = 0.0;
         if (colorElement) {
-            colorElement->QueryAttribute("x", &x);
-            colorElement->QueryAttribute("y", &y);
-            colorElement->QueryAttribute("z", &z);
+            colorElement->QueryDoubleAttribute("r", &r);
+            colorElement->QueryDoubleAttribute("g", &g);
+            colorElement->QueryDoubleAttribute("b", &b);
         }
-        material.setColor({x, y, z});
+        material.setColor({r, g, b});
     }
 
     static void parsePhongElements(XMLElement *materialElement, Material &material) {
