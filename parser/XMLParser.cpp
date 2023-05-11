@@ -2,7 +2,6 @@
 // Created by Andrei Goje on 08.05.23.
 //
 
-#include <iostream>
 #include <string>
 #include "XMLParser.h"
 #include "CameraParser.h"
@@ -53,8 +52,7 @@ color XMLParser::get_background_color() {
 }
 
 void XMLParser::parser_surface_informations(XMLElement *pElement) {
-    ObjectParser objectParser;
-    scene_spheres = objectParser.parse_all_spheres(pElement);
+    scene_spheres = ObjectParser::parse_all_spheres(pElement);
 }
 
 std::vector<Sphere> XMLParser::get_scene_spheres() {

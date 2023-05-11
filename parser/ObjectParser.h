@@ -8,15 +8,17 @@
 
 #include <vector>
 #include "../objects/Sphere.h"
+#include "MaterialParser.h"
 
 class ObjectParser{
 
 
 public:
-    std::vector<Sphere> parse_all_spheres(XMLElement* scene_element){
+    static std::vector<Sphere> parse_all_spheres(XMLElement* scene_element){
 
         std::vector<Sphere> spheres;
         XMLElement* surfaces_element = scene_element->FirstChildElement("surfaces");
+
 
         if (surfaces_element){
             XMLElement* sphere_element = surfaces_element->FirstChildElement("sphere");
@@ -33,8 +35,11 @@ public:
                 position->QueryAttribute("y", &y);
                 position->QueryAttribute("z", &z);
 
+                Material material;
+                MaterialParser::get_material(sphere_element, material);
+
                 //Push the new sphere to the vector we then return
-                spheres.emplace_back(radius, point3(x, y, z));
+                spheres.emplace_back(radius, point3(x, y, z), material);
 
                 sphere_element = sphere_element->NextSiblingElement("sphere");  // Move to the next sphere element
             }
