@@ -24,8 +24,17 @@ private:
     double viewport_height = 0.0;
     double viewport_width = 0.0;
     const double pi = 3.1415926535897932385;
+    int maximal_ray_bound = 0;
 
 public:
+
+    void set_maximal_ray_bound(int ray_bound){
+        maximal_ray_bound = ray_bound;
+    }
+
+    int get_maximal_ray_bound(){
+        return maximal_ray_bound;
+    }
 
     void set_position(point3& received_camera_position){
         camera_position = received_camera_position;
