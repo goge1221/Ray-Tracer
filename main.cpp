@@ -56,16 +56,12 @@ color ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color
 
 int main() {
 
+    Scene scene;
     XMLParser xmlParser;
-    xmlParser.load_xml_File("example2.xml");
+    xmlParser.load_xml_File("example2.xml", scene);
 
-    camera cam = xmlParser.get_camera();
-    std::vector<Sphere> spheres = xmlParser.get_scene_spheres();
-    Light light = xmlParser.get_light_informations();
-
-    int image_width = static_cast<int>(cam.get_image_width());
-    int image_height = static_cast<int>(cam.get_image_height());
-
+    int image_width = scene.get_image_width();
+    int image_height = scene.get_image_height();
 
     // Render
     std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
@@ -75,8 +71,9 @@ int main() {
         for (int i = 0; i < image_width; ++i) {
             auto u = double(i) / (image_width - 1);
             auto v = double(j) / (image_height - 1);
-            ray ray = cam.get_ray(u, v);
-            color pixel_color = ray_color(ray, spheres, xmlParser.get_background_color(), light);
+            ray ray = scene.get_camera_ray(u, v);
+            color pixel_color = ray_color(ray, scene.get_scene_spheres(),
+                                          scene.get_background_color(), scene.get_light());
             write_color(std::cout, pixel_color);
         }
     }

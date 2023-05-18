@@ -11,7 +11,7 @@ private:
     XMLElement* camera_element;
 
 public:
-    CameraParser(XMLElement *scene_element,  camera& camera) {
+    CameraParser(XMLElement *scene_element, camera& camera) {
         camera_element = scene_element->FirstChildElement("camera");
 
         point3 camera_position = get_camera_position();

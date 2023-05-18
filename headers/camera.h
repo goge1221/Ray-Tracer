@@ -23,7 +23,7 @@ private:
     double aspect_ratio = 5.0;
     double viewport_height = 0.0;
     double viewport_width = 0.0;
-    const double pi = 3.1415926535897932385;
+    double pi = 3.1415926535897932385;
     int maximal_ray_bound = 0;
 
 public:

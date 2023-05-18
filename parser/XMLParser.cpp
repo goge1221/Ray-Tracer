@@ -8,7 +8,7 @@
 #include "ObjectParser.h"
 #include "LightParser.h"
 
-void XMLParser::load_xml_File(const std::string &scenename) {
+void XMLParser::load_xml_File(const std::string &scenename, Scene& scene) {
     std::string basepath = "/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/";
     std::string fullpath = basepath + scenename;
 
@@ -17,56 +17,41 @@ void XMLParser::load_xml_File(const std::string &scenename) {
 
     XMLElement* scene_element = document.FirstChildElement("scene");
 
-    parse_background_color(scene_element);
-    parse_camera_informations(scene_element);
-    parser_surface_informations(scene_element);
-    parse_light_information(scene_element);
+    color background_color = parse_background_color(scene_element);
+    camera camera = parse_camera_information(scene_element);
+    std::vector<Sphere> scene_spheres = parse_scene_objects(scene_element);
+    Light light = parse_light_information(scene_element);
+
+    scene = Scene(background_color, camera, scene_spheres, light);
 }
 
 /* Parse the color and set it */
-void XMLParser::parse_background_color(XMLElement* scene_element) {
+color XMLParser::parse_background_color(XMLElement* scene_element) {
     XMLElement* background_element = scene_element->FirstChildElement("background_color");
     float r = 0.0, g = 0.0, b = 0.0;
     background_element->QueryFloatAttribute("r", &r);
     background_element->QueryFloatAttribute("g", &g);
     background_element->QueryFloatAttribute("b", &b);
 
-    color received_color(r, g, b);
-    set_background_color(received_color);
-}
-
-void XMLParser::set_background_color(color& color) {
-    background_color = color;
-}
-
-/* Parse all the camera information */
-void XMLParser::parse_camera_informations(XMLElement* scene_element){
-    (CameraParser(scene_element, camera));
-}
-
-camera XMLParser::get_camera() {
-    return camera;
-}
-
-color XMLParser::get_background_color() {
+    color background_color(r, g, b);
     return background_color;
 }
 
-void XMLParser::parser_surface_informations(XMLElement *pElement) {
-    scene_spheres = ObjectParser::parse_all_spheres(pElement);
+/* Parse all the camera information */
+camera XMLParser::parse_camera_information(XMLElement* scene_element){
+    camera cam;
+    (CameraParser(scene_element, cam));
+    return cam;
 }
 
-std::vector<Sphere> XMLParser::get_scene_spheres() {
-    return scene_spheres;
-}
 
-void XMLParser::parse_light_information(XMLElement* sceneElement){
-    light = LightParser::parseLightInformations(sceneElement);
-}
-
-Light XMLParser::get_light_informations(){
-    return light;
+Light XMLParser::parse_light_information(XMLElement* sceneElement){
+    return LightParser::parseLightInformations(sceneElement);
 }
 
 XMLParser::XMLParser() = default;
 
+std::vector<Sphere> XMLParser::parse_scene_objects(XMLElement *pElement) {
+    return ObjectParser::parse_all_spheres(pElement);
+
+}
