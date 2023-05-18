@@ -9,6 +9,7 @@
 #include "tinyxml2.h"
 #include "../headers/camera.h"
 #include "../objects/Sphere.h"
+#include "../objects/light.h"
 
 using namespace tinyxml2;
 
@@ -19,6 +20,7 @@ private:
     color background_color;
     camera camera;
     std::vector<Sphere> scene_spheres;
+    Light light;
 
     void set_background_color(color&);
     void parse_background_color(XMLElement *scene_element);
@@ -31,6 +33,9 @@ public:
     color get_background_color();
     std::vector<Sphere> get_scene_spheres();
     void parser_surface_informations(XMLElement *pElement);
+    void parse_light_information(XMLElement *sceneElement);
+
+    Light get_light_informations();
 };
 
 

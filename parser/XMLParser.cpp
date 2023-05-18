@@ -6,6 +6,7 @@
 #include "XMLParser.h"
 #include "CameraParser.h"
 #include "ObjectParser.h"
+#include "LightParser.h"
 
 void XMLParser::load_xml_File(const std::string &scenename) {
     std::string basepath = "/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/";
@@ -19,7 +20,7 @@ void XMLParser::load_xml_File(const std::string &scenename) {
     parse_background_color(scene_element);
     parse_camera_informations(scene_element);
     parser_surface_informations(scene_element);
-
+    parse_light_information(scene_element);
 }
 
 /* Parse the color and set it */
@@ -57,6 +58,14 @@ void XMLParser::parser_surface_informations(XMLElement *pElement) {
 
 std::vector<Sphere> XMLParser::get_scene_spheres() {
     return scene_spheres;
+}
+
+void XMLParser::parse_light_information(XMLElement* sceneElement){
+    light = LightParser::parseLightInformations(sceneElement);
+}
+
+Light XMLParser::get_light_informations(){
+    return light;
 }
 
 XMLParser::XMLParser() = default;

@@ -5,6 +5,38 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
+class Light{
 
+public:
+    const color &getAmbientLightColor() const {
+        return ambientLightColor;
+    }
 
-#endif //LAB_3_LIGHT_H
+    void setAmbientLightColor(const color &lightColor) {
+        Light::ambientLightColor = lightColor;
+    }
+
+    const color &getParallelLightColor() const {
+        return parallelLightColor;
+    }
+
+    void setParallelLightColor(const color &lightColor) {
+        Light::parallelLightColor = lightColor;
+    }
+
+    const vec3 &getParallelLightDirection() const {
+        return parallelLightDirection;
+    }
+
+    void setParallelLightDirection(const vec3 &lightDirection) {
+        Light::parallelLightDirection = lightDirection;
+    }
+
+private:
+    color ambientLightColor;
+    color parallelLightColor;
+    vec3 parallelLightDirection;
+
+};
+
+#endif //LIGHT_H
