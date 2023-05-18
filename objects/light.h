@@ -32,6 +32,14 @@ public:
         Light::parallelLightDirection = lightDirection;
     }
 
+    bool hasParallelLights(){
+        vec3 undefined(0, 0, 0);
+        if (parallelLightColor == undefined && parallelLightDirection == undefined){
+            return false;
+        }
+        return true;
+    }
+
 private:
     color ambientLightColor;
     color parallelLightColor;

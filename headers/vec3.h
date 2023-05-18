@@ -41,6 +41,10 @@ public:
         return *this *= 1/t;
     }
 
+    bool operator==(const vec3& other) const {
+        return (e[0] == other.e[0] && e[1] == other.e[1] && e[2] == other.e[2]);
+    }
+
     double length() const {
         return sqrt(length_squared());
     }
@@ -83,6 +87,7 @@ inline vec3 operator*(double t, const vec3 &v) {
 inline vec3 operator*(const vec3 &v, double t) {
     return t * v;
 }
+
 
 inline vec3 operator/(vec3 v, double t) {
     return (1/t) * v;

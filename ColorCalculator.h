@@ -22,45 +22,54 @@ private:
         for (const auto &sphere: spheres) {
             if (sphere.hit_by_ray(camera_ray, hitInformation)) {
 
-                vec3 lightVector = light.getParallelLightDirection();
+                vec3 finalColor = calculate_ambient_color(light, sphere.get_material());
 
-                // Calculate the direction of the light ray.
-                vec3 L = -unit_vector(lightVector);
+                if (light.hasParallelLights()){
+                    vec3 lightVector = light.getParallelLightDirection();
 
-                //Calculate the diffuse component
-                color ambientColor = light.getAmbientLightColor();
+                    // Calculate the direction of the light ray.
+                    vec3 L = -unit_vector(lightVector);
 
-                // Calculate the ambient component.
-                vec3 ambient = ambientColor*sphere.get_material().getColor()*sphere.get_material().getKa();
+                    // Calculate the diffuse component.
+                    double Kd = dot(L, hitInformation.normal);
+                    if (Kd < 0) Kd = 0;
 
-                // Calculate the diffuse component.
-                double Kd = dot(L, hitInformation.normal);
-                if (Kd < 0) Kd = 0;
+                    vec3 diffuse = Kd * finalColor;
 
-                vec3 diffuse = Kd * ambient;
+                    // Calculate the direction of the view ray.
+                    vec3 E = -unit_vector(hitInformation.hitPoint);
 
+                    // Calculate the half vector.
+                    vec3 H = unit_vector(L + E);
 
-                // Calculate the direction of the view ray.
-                vec3 E = -unit_vector(hitInformation.hitPoint);
+                    // Calculate the specular component.
+                    double KsDot = dot(H, hitInformation.normal);
+                    // if (KsDot < 0) KsDot;
 
-                // Calculate the half vector.
-                vec3 H = unit_vector(L + E);
+                    double Ks = pow(KsDot, 200);
+                    if (Ks < 0) Ks = sphere.get_material().getKs();
+                    color paralelLightColor = light.getParallelLightColor();
+                    vec3 specular = Ks * paralelLightColor;
 
-                // Calculate the specular component.
-                double KsDot = dot(H, hitInformation.normal);
-                // if (KsDot < 0) KsDot;
+                    finalColor += diffuse;
+                    finalColor += specular;
+                }
 
-                double Ks = pow(KsDot, 200);
-                if (Ks < 0) Ks = sphere.get_material().getKs();
-                color paralelLightColor = light.getParallelLightColor();
-                vec3 specular = Ks * paralelLightColor;
 
                 // Return the sum of the ambient, diffuse, and specular components.
-                return ambient + diffuse + specular;
+                return finalColor;
             }
         }
 
         return background_color;
+    }
+
+    static color calculate_ambient_color(const Light& light, const Material& sphere_material){
+        //Calculate the ambient color
+        color ambientColor = light.getAmbientLightColor();
+        // Calculate the ambient component.
+        vec3 ambient = ambientColor * sphere_material.getColor()*sphere_material.getKa();
+        return ambient;
     }
 
 };
