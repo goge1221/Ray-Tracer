@@ -26,9 +26,6 @@ public:
         double camera_angle = get_camera_angle();
         camera.set_camera_angle(camera_angle);
 
-        int max_bounces = get_max_bounces();
-        camera.set_maximal_ray_bound(max_bounces);
-
         std::pair<double, double> resolution = get_camera_resolutions();
         camera.initialize_camera(resolution.first, resolution.second);
 
