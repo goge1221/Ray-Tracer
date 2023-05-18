@@ -5,35 +5,57 @@
 #include "headers/camera.h"
 #include "parser/XMLParser.h"
 
-bool hit_something(const ray &ray, hit_information &hit_info, const std::vector<Sphere> &spheres) {
-    hit_information temporary;
-    bool hit_anything = false;
-    double closest = 1000;
-
-    for (const auto &sphere: spheres) {
-        if (sphere.hit_by_ray(ray, 0, closest, temporary)) {
-            hit_anything = true;
-            closest = temporary.t;
-            hit_info = temporary;
-        }
-    }
-    return hit_anything;
+vec3 reflect(vec3 v, vec3 n) {
+    // Calculate the reflection vector.
+    return v - 2.0 * dot(v, n) * n;
 }
-
 
 color ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, int max_bounces) {
     hit_information hitInformation;
 
     if (max_bounces <= 0) return {0, 0, 0};
 
-    if (hit_something(camera_ray, hitInformation, spheres)) {
-        point3 target = hitInformation.hitPoint + hitInformation.normal;
-        return spheres.at(0).get_material().getColor();
-      //return ray_color(ray(hitInformation.hitPoint, target - hitInformation.hitPoint), spheres, background_color,
-        //                 max_bounces - 1);
+    for (const auto &sphere: spheres) {
+        if (sphere.hit_by_ray(camera_ray, hitInformation)) {
+
+            vec3 lightVector(-3, 3, -1);
+
+            // Calculate the direction of the light ray.
+            vec3 L = -unit_vector(lightVector);
+
+            //Calculate the diffuse component
+            color ambientColor(1, 1, 1);
+
+            // Calculate the ambient component.
+            vec3 ambient = ambientColor*sphere.get_material().getColor()*sphere.get_material().getKa();
+
+            // Calculate the diffuse component.
+            double Kd = dot(L, hitInformation.normal);
+            if (Kd < 0) Kd = 0.0;
+
+            vec3 diffuse = Kd * ambient;
+
+
+            // Calculate the direction of the view ray.
+            vec3 E = -unit_vector(hitInformation.hitPoint);
+
+            // Calculate the half vector.
+            vec3 H = unit_vector(L + E);
+
+
+            // Calculate the specular component.
+            double KsDot = dot(H, hitInformation.normal);
+            if (KsDot < 0) KsDot = 0;
+
+            double Ks = pow(KsDot, 200);
+            vec3 specular = Ks * color(1,1,1);
+
+            // Return the sum of the ambient, diffuse, and specular components.
+            return ambient + diffuse + specular;
+        }
     }
 
-    return {0.5, 0.5, 0.5};
+    return {0, 0, 0};
 }
 
 
