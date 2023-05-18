@@ -33,19 +33,19 @@ public:
         return static_cast<int>(cam.get_image_height());
     }
 
-    ray get_camera_ray(double u, double v){
+    ray get_camera_ray(double u, double v) const{
         return cam.get_ray(u, v);
     }
 
-    std::vector<Sphere> get_scene_spheres(){
+    std::vector<Sphere> get_scene_spheres() const{
         return scene_spheres;
     }
 
-    color get_background_color(){
+    color get_background_color() const{
         return background_color;
     }
 
-    Light get_light(){
+    Light get_light() const{
         return light;
     }
 
