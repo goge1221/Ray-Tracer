@@ -11,7 +11,9 @@ struct hit_information{
 
     point3 hitPoint;
     vec3 normal;
+    double radius{};
     double t{};
+    double discriminant{};
     bool front_face{};
 
     inline void set_face_normal(const ray& ray, const vec3& outward_normal){

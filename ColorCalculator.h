@@ -19,48 +19,58 @@ private:
     static color
     ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light) {
         hit_information hitInformation;
-
         for (const auto &sphere: spheres) {
             if (sphere.hit_by_ray(camera_ray, hitInformation)) {
 
                 vec3 finalColor = calculate_ambient_color(light, sphere.get_material());
 
                 if (light.hasParallelLights()) {
-                    color diffuse = calculate_diffuse_component(light, hitInformation,sphere.get_material());
+                    color diffuse = calculate_diffuse_component(light, hitInformation, sphere.get_material());
                     finalColor += diffuse;
 
-                    color specular = calculate_specular_component(light, hitInformation);
-                    finalColor += specular;
-                }
+                    if (hitInformation.radius == 2.5) {
+                        point3 positionOnSpere = hitInformation.hitPoint;
+                        vec3 lightVector = -unit_vector(light.getParallelLightDirection());
 
+                        ray fromPointOnSphereToLight(positionOnSpere, lightVector);
+
+                        hit_information hitInformationFromPoint;
+
+                        for (const auto &sphere1: spheres) {
+                            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint) && sphere != sphere1) {
+                                if (hitInformationFromPoint.discriminant > 0)
+                                    finalColor *= 0.6;
+                            }
+                        }
+
+
+                    } else {
+                        color specular = calculate_specular_component(light, hitInformation, sphere.get_material(),
+                                                                      camera_ray);
+                        finalColor += specular;
+                    }
+                }
                 // Return the sum of the ambient, diffuse, and specular components.
                 return finalColor;
             }
         }
-
         return background_color;
     }
 
-    static color calculate_specular_component(const Light &light, const hit_information &hitInformation) {
 
-        vec3 L = -unit_vector(light.getParallelLightDirection());
+    static color
+    calculate_specular_component(const Light &light, const hit_information &hitInformation, const Material &material,
+                                 const ray &camera_ray) {
 
-        // Calculate the direction of the view ray.
-        vec3 E = -unit_vector(hitInformation.hitPoint);
+        vec3 lightDir = unit_vector(light.getParallelLightDirection());
+        vec3 reflectionDir = ((2.0 * dot(hitInformation.normal, lightDir)) * hitInformation.normal) - lightDir;
 
-        // Calculate the half vector.
-        vec3 H = unit_vector(L + E);
+        double dotpr = dot(unit_vector(camera_ray.direction()), unit_vector(reflectionDir));
+        if (dotpr < 0) dotpr = 0;
 
-        // Calculate the specular component.
-        double KsDot = dot(H, hitInformation.normal);
-        // if (KsDot < 0) KsDot;
+        vec3 specularTerm = light.getParallelLightColor() * std::pow(dotpr, material.getExponent() * material.getKs());
 
-        double Ks = pow(KsDot, 200);
-        if (Ks < 0) Ks = 0;
-
-        color paralelLightColor = light.getParallelLightColor();
-
-        return Ks * paralelLightColor;
+        return specularTerm;
     }
 
     static color

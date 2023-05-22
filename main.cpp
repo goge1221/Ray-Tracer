@@ -10,7 +10,7 @@ int main() {
 
     Scene scene;
     XMLParser xmlParser;
-    xmlParser.load_xml_File("example2.xml", scene);
+    xmlParser.load_xml_File("example3.xml", scene);
 
     int image_width = scene.get_image_width();
     int image_height = scene.get_image_height();
@@ -29,5 +29,3 @@ int main() {
     }
     std::cerr << "\nDone.\n";
 }
-
-
