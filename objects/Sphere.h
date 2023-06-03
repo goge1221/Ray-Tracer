@@ -22,13 +22,13 @@ public:
 
     Material get_material() const { return material; };
 
-    bool hit_by_ray(const ray &r, hit_information &hit_information) const {
-        vec3 oc = r.origin() - position;
-        double a = r.direction().length_squared();
-        double half_b = dot(oc, r.direction());
-        double c = oc.length_squared() - radius * radius;
+    bool hit_by_ray(const ray &ray, hit_information &hit_information) const {
+        vec3 directionVector = ray.origin() - position;
+        double a = dot(ray.direction(), ray.direction());
+        double half_b = dot(directionVector, ray.direction());
+        double c = dot(directionVector, directionVector) - radius * radius;
 
-        auto discriminant = half_b * half_b - a * c;
+        double discriminant = half_b * half_b - a * c;
         if (discriminant < 0) return false;
 
         hit_information.discriminant = discriminant;
@@ -38,10 +38,10 @@ public:
         double root = (-half_b - sqrt(discriminant)) / a;
 
         hit_information.t = root;
-        hit_information.hitPoint = r.at(root);
+        hit_information.hitPoint = ray.at(root);
 
-        vec3 outward_normal = (hit_information.hitPoint - position) / radius;
-        hit_information.set_face_normal(r, outward_normal);
+        vec3 normal = (hit_information.hitPoint - position) / radius;
+        hit_information.normal = normal;
 
         return true;
     }

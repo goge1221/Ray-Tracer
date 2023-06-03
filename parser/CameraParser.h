@@ -31,17 +31,6 @@ public:
 
     }
 
-    int get_max_bounces(){
-        int max_bounces = 1;
-
-        XMLElement* bounce_element = camera_element->FirstChildElement("max_bounces");
-
-        if (bounce_element) {
-            bounce_element->QueryAttribute("n", &max_bounces);
-        }
-        if (max_bounces <= 0) return 1;
-        return max_bounces;
-    }
 
     point3 get_camera_position(){
         float x = 0.0, y = 0.0, z = 0.0;

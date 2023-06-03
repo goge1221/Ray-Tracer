@@ -30,7 +30,7 @@ private:
 
                     if (hitInformation.radius == 2.5) {
                         point3 positionOnSpere = hitInformation.hitPoint;
-                        vec3 lightVector = -unit_vector(light.getParallelLightDirection());
+                        vec3 lightVector = -normalize(light.getParallelLightDirection());
 
                         ray fromPointOnSphereToLight(positionOnSpere, lightVector);
 
@@ -39,11 +39,9 @@ private:
                         for (const auto &sphere1: spheres) {
                             if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint) && sphere != sphere1) {
                                 if (hitInformationFromPoint.discriminant > 0)
-                                    finalColor *= 0.6;
+                                    finalColor *= 0.3;
                             }
                         }
-
-
                     } else {
                         color specular = calculate_specular_component(light, hitInformation, sphere.get_material(),
                                                                       camera_ray);
@@ -58,14 +56,17 @@ private:
     }
 
 
+    static vec3 reflect(vec3 lightDirection, vec3 hitPointNormal){
+        return ((2.0 * dot(hitPointNormal, lightDirection)) * hitPointNormal) - lightDirection;
+    }
+
     static color
     calculate_specular_component(const Light &light, const hit_information &hitInformation, const Material &material,
                                  const ray &camera_ray) {
 
-        vec3 lightDir = unit_vector(light.getParallelLightDirection());
-        vec3 reflectionDir = ((2.0 * dot(hitInformation.normal, lightDir)) * hitInformation.normal) - lightDir;
-
-        double dotpr = dot(unit_vector(camera_ray.direction()), unit_vector(reflectionDir));
+        vec3 lightDir = normalize(light.getParallelLightDirection());
+        vec3 reflectionDir = reflect(lightDir, hitInformation.normal);
+        double dotpr = dot(normalize(camera_ray.direction()), normalize(reflectionDir));
         if (dotpr < 0) dotpr = 0;
 
         vec3 specularTerm = light.getParallelLightColor() * std::pow(dotpr, material.getExponent() * material.getKs());
@@ -78,7 +79,7 @@ private:
         vec3 lightVector = light.getParallelLightDirection();
 
         // Calculate the direction of the light ray.
-        vec3 L = -unit_vector(lightVector);
+        vec3 L = -normalize(lightVector);
 
         // Calculate the diffuse component.
         double Kd = dot(L, hitInformation.normal);
@@ -88,7 +89,7 @@ private:
     }
 
     static color calculate_ambient_color(const Light &light, const Material &sphere_material) {
-        //Calculate the ambient color
+        //Get the ambient color
         color ambientColor = light.getAmbientLightColor();
         // Calculate the ambient component.
         vec3 ambient = ambientColor * sphere_material.getColor() * sphere_material.getKa();

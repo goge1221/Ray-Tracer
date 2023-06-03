@@ -12,101 +12,98 @@ using std::sqrt;
 
 class vec3 {
 public:
-    vec3() : e{0,0,0} {}
-    vec3(double e0, double e1, double e2) : e{e0, e1, e2} {}
+    vec3() : coord{0, 0, 0} {}
 
-    double x() const { return e[0]; }
-    double y() const { return e[1]; }
-    double z() const { return e[2]; }
+    vec3(double x, double y, double z) : coord{x, y, z} {}
 
-    vec3 operator-() const { return {-e[0], -e[1], -e[2]}; }
-    double operator[](int i) const { return e[i]; }
-    double& operator[](int i) { return e[i]; }
+    double x() const { return coord[0]; }
 
-    vec3& operator+=(const vec3 &v) {
-        e[0] += v.e[0];
-        e[1] += v.e[1];
-        e[2] += v.e[2];
+    double y() const { return coord[1]; }
+
+    double z() const { return coord[2]; }
+
+    vec3 operator-() const { return {-x(), -y(), -z()}; }
+
+    double operator[](int i) const { return coord[i]; }
+
+    double &operator[](int i) { return coord[i]; }
+
+    vec3 &operator+=(const vec3 &other) {
+        for (int i = 0; i < 3; ++i) {
+            coord[i] += other[i];
+        }
         return *this;
     }
 
-    vec3& operator*=(const double t) {
-        e[0] *= t;
-        e[1] *= t;
-        e[2] *= t;
+    vec3 &operator*=(const double t) {
+        for (double & i : coord) i *= t;
         return *this;
     }
 
-    vec3& operator/=(const double t) {
-        return *this *= 1/t;
+    vec3 &operator/=(const double t) {
+        return *this *= 1 / t;
     }
 
-    bool operator==(const vec3& other) const {
-        return (e[0] == other.e[0] && e[1] == other.e[1] && e[2] == other.e[2]);
+    bool operator==(const vec3 &other) const {
+        for (int i = 0; i < 3; ++i) {
+            if (coord[i] != other[i])
+                return false;
+        }
+        return true;
     }
 
     double length() const {
-        return sqrt(length_squared());
+        return sqrt(x() * x() + y() * y() + z() * z());
     }
 
-    double length_squared() const {
-        return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
-    }
-
-
-public:
-    double e[3];
+private:
+    double coord[3];
 };
 
 // Type aliases for vec3
-using point3 = vec3;   // 3D point
-using color = vec3;    // RGB color
+using point3 = vec3;
+using color = vec3;
 
-// vec3 Utility Functions
-
-inline std::ostream& operator<<(std::ostream &out, const vec3 &v) {
-    return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
+inline std::ostream &operator<<(std::ostream &out, const vec3 &v) {
+    return out << v.x() << ' ' << v.y() << ' ' << v.z();
 }
 
-inline vec3 operator+(const vec3 &u, const vec3 &v) {
-    return {u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]};
+inline vec3 operator+(const vec3 &l_vec, const vec3 &r_vec) {
+    return {l_vec.x() + r_vec.x(), l_vec.y() + r_vec.y(), l_vec.z() + r_vec.z()};
 }
 
-inline vec3 operator-(const vec3 &u, const vec3 &v) {
-    return {u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]};
+inline vec3 operator-(const vec3 &l_vec, const vec3 &r_vec) {
+    return {l_vec.x() - r_vec.x(), l_vec.y() - r_vec.y(), l_vec.z() - r_vec.z()};
 }
 
-inline vec3 operator*(const vec3 &u, const vec3 &v) {
-    return {u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]};
+inline vec3 operator*(const vec3 &l_vec, const vec3 &r_vec) {
+    return {l_vec.x() * r_vec.x(), l_vec.y() * r_vec.y(), l_vec.z() * r_vec.z()};
 }
 
-inline vec3 operator*(double t, const vec3 &v) {
-    return {t*v.e[0], t*v.e[1], t*v.e[2]};
+inline vec3 operator*(double scalar, const vec3 &vec) {
+    return {scalar * vec.x(), scalar * vec.y(), scalar * vec.z()};
 }
 
-inline vec3 operator*(const vec3 &v, double t) {
-    return t * v;
+inline vec3 operator*(const vec3 &vec, double scalar) {
+    return scalar * vec;
 }
 
-
-inline vec3 operator/(vec3 v, double t) {
-    return (1/t) * v;
+inline vec3 operator/(vec3 vec, double t) {
+    return (1 / t) * vec;
 }
 
-inline double dot(const vec3 &u, const vec3 &v) {
-    return u.e[0] * v.e[0]
-           + u.e[1] * v.e[1]
-           + u.e[2] * v.e[2];
+inline double dot(const vec3 &l_vec, const vec3 &r_vec) {
+    return l_vec.x() * r_vec.x() + l_vec.y() * r_vec.y() + l_vec.z() * r_vec.z();
 }
 
-inline vec3 cross(const vec3 &u, const vec3 &v) {
-    return {u.e[1] * v.e[2] - u.e[2] * v.e[1],
-                u.e[2] * v.e[0] - u.e[0] * v.e[2],
-                u.e[0] * v.e[1] - u.e[1] * v.e[0]};
+inline vec3 cross(const vec3 &l_vec, const vec3 &r_vec) {
+    return {l_vec.y() * r_vec.z() - l_vec.z() * r_vec.y(),
+            l_vec.z() * r_vec.x() - l_vec.x() * r_vec.z(),
+            l_vec.x() * r_vec.y() - l_vec.y() * r_vec.x()};
 }
 
-inline vec3 unit_vector(vec3 v) {
-    return v / v.length();
+inline vec3 normalize(vec3 vec) {
+    return vec / vec.length();
 }
 
 #endif

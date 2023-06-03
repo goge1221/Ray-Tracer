@@ -58,8 +58,8 @@ public:
         viewport_width = 2.0 * h;
         viewport_height = viewport_width / aspect_ratio;
 
-        auto w = unit_vector(camera_position - look_at);
-        auto u = unit_vector(cross(up, w));
+        auto w = normalize(camera_position - look_at);
+        auto u = normalize(cross(up, w));
         auto v = cross(w, u);
 
         horizontal = viewport_width * u;

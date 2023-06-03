@@ -15,7 +15,7 @@ double clamp(double x, double min, double max) {
     return x;
 }
 
-void write_color(std::ostream &out, color pixel_color) {
+void print_color(std::ostream &out, color pixel_color) {
 
     // Write the translated [0,255] value of each color component.
     auto r = pixel_color.x();

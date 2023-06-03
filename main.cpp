@@ -24,7 +24,7 @@ int main() {
             auto u = double(i) / (image_width - 1);
             auto v = double(j) / (image_height - 1);
             color pixel_color = ColorCalculator::get_color_for_pixel(scene, u, v);
-            write_color(std::cout, pixel_color);
+            print_color(std::cout, pixel_color);
         }
     }
     std::cerr << "\nDone.\n";
