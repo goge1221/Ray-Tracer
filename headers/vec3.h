@@ -12,20 +12,14 @@ using std::sqrt;
 
 class vec3 {
 public:
+    // Constructors
     vec3() : coord{0, 0, 0} {}
-
     vec3(double x, double y, double z) : coord{x, y, z} {}
 
-    double x() const { return coord[0]; }
-
-    double y() const { return coord[1]; }
-
-    double z() const { return coord[2]; }
 
     vec3 operator-() const { return {-x(), -y(), -z()}; }
 
     double operator[](int i) const { return coord[i]; }
-
     double &operator[](int i) { return coord[i]; }
 
     vec3 &operator+=(const vec3 &other) {
@@ -37,6 +31,13 @@ public:
 
     vec3 &operator*=(const double t) {
         for (double & i : coord) i *= t;
+        return *this;
+    }
+
+    vec3 &operator-=(const vec3 &other) {
+        for (int i = 0; i < 3; ++i) {
+            coord[i] -= other[i];
+        }
         return *this;
     }
 
@@ -56,6 +57,11 @@ public:
         return sqrt(x() * x() + y() * y() + z() * z());
     }
 
+    //Getters
+    double x() const { return coord[0]; }
+    double y() const { return coord[1]; }
+    double z() const { return coord[2]; }
+
 private:
     double coord[3];
 };
@@ -63,10 +69,6 @@ private:
 // Type aliases for vec3
 using point3 = vec3;
 using color = vec3;
-
-inline std::ostream &operator<<(std::ostream &out, const vec3 &v) {
-    return out << v.x() << ' ' << v.y() << ' ' << v.z();
-}
 
 inline vec3 operator+(const vec3 &l_vec, const vec3 &r_vec) {
     return {l_vec.x() + r_vec.x(), l_vec.y() + r_vec.y(), l_vec.z() + r_vec.z()};

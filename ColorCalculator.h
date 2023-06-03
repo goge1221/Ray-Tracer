@@ -39,7 +39,7 @@ private:
                         for (const auto &sphere1: spheres) {
                             if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint) && sphere != sphere1) {
                                 if (hitInformationFromPoint.discriminant > 0)
-                                    finalColor *= 0.3;
+                                    finalColor -= diffuse;
                             }
                         }
                     } else {
