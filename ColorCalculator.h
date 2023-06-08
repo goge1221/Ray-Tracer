@@ -19,8 +19,10 @@ private:
     static color
     ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light) {
         hit_information hitInformation;
+        const double infinity = std::numeric_limits<double>::infinity();
+
         for (const auto &sphere: spheres) {
-            if (sphere.hit_by_ray(camera_ray, hitInformation)) {
+            if (sphere.hit_by_ray(camera_ray, 0, infinity, hitInformation)) {
 
                 vec3 finalColor = calculate_ambient_color(light, sphere.get_material());
 
@@ -28,20 +30,9 @@ private:
                     color diffuse = calculate_diffuse_component(light, hitInformation, sphere.get_material());
                     finalColor += diffuse;
 
-                    if (hitInformation.radius == 2.5) {
-                        point3 positionOnSpere = hitInformation.hitPoint;
-                        vec3 lightVector = -normalize(light.getParallelLightDirection());
-
-                        ray fromPointOnSphereToLight(positionOnSpere, lightVector);
-
-                        hit_information hitInformationFromPoint;
-
-                        for (const auto &sphere1: spheres) {
-                            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint) && sphere != sphere1) {
-                                if (hitInformationFromPoint.discriminant > 0)
-                                    finalColor -= diffuse;
-                            }
-                        }
+                    bool castShadow = shouldCastShadow(hitInformation, light, spheres, sphere);
+                    if (castShadow) {
+                        finalColor -= diffuse;
                     } else {
                         color specular = calculate_specular_component(light, hitInformation, sphere.get_material(),
                                                                       camera_ray);
@@ -55,8 +46,36 @@ private:
         return background_color;
     }
 
+    static bool shouldCastShadow(const hit_information &hitInformation, const Light &light,
+                                 const std::vector<Sphere> &spheres, const Sphere &currentSphere) {
+        point3 positionOnSphere = hitInformation.hitPoint;
+        vec3 lightVector = -normalize(light.getParallelLightDirection());
 
-    static vec3 reflect(vec3 lightDirection, vec3 hitPointNormal){
+        ray fromPointOnSphereToLight(positionOnSphere, lightVector);
+        const double infinity = std::numeric_limits<double>::infinity();
+
+        hit_information hitInformationFromPoint;
+        for (const auto &sphere1: spheres) {
+            if (sphere1 == currentSphere) continue;
+            if (sphere1.hit_by_ray(fromPointOnSphereToLight,0, infinity, hitInformationFromPoint)) {
+                if (hitInformationFromPoint.discriminant > 0 && hitInformationFromPoint.front_face) {
+                    // Überprüfe, ob der getroffene Punkt auf der Oberfläche der Kugel zwischen dem Punkt des Lichts und der Kugel liegt
+                    point3 pointOnOtherSphere = hitInformationFromPoint.hitPoint;
+                    vec3 lightToPointVector = pointOnOtherSphere - fromPointOnSphereToLight.origin();
+                    double distanceToOtherSphere = lightToPointVector.length();
+
+                    if (distanceToOtherSphere > lightVector.length()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    static vec3 reflect(vec3 lightDirection, vec3 hitPointNormal) {
         return ((2.0 * dot(hitPointNormal, lightDirection)) * hitPointNormal) - lightDirection;
     }
 
