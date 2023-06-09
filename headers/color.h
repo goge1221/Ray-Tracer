@@ -9,24 +9,17 @@
 
 #include <iostream>
 
-double clamp(double x, double min, double max) {
-    if (x < min) return min;
-    if (x > max) return max;
-    return x;
+double get_color_in_range(double color) {
+    if (color < 0.0) return 0.0;
+    if (color > 0.999) return 0.999;
+    return color;
 }
 
-void print_color(std::ostream &out, color pixel_color) {
+void write_color_to_file(std::ofstream &out, color pixel_color) {
 
-    // Write the translated [0,255] value of each color component.
-    auto r = pixel_color.x();
-    auto g = pixel_color.y();
-    auto b = pixel_color.z();
-
-    // Write the translated [0,255] value of each color component.
-    out << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
-        << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
-        << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
-
+    out << static_cast<int>(256 * get_color_in_range(pixel_color.x())) << ' '
+        << static_cast<int>(256 * get_color_in_range(pixel_color.y())) << ' '
+        << static_cast<int>(256 * get_color_in_range(pixel_color.z())) << '\n';
 
 }
 

@@ -8,14 +8,15 @@
 #include "ObjectParser.h"
 #include "LightParser.h"
 
-void XMLParser::load_xml_File(const std::string &scenename, Scene& scene) {
-    std::string basepath = "/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/";
-    std::string fullpath = basepath + scenename;
+void XMLParser::load_xml_File(const std::string &path, Scene& scene) {
 
-    const char *filename = fullpath.c_str();
+    const char *filename = path.c_str();
     document.LoadFile(filename);
 
     XMLElement* scene_element = document.FirstChildElement("scene");
+
+    const char* outputFileName = scene_element->Attribute("output_file");
+    outputName = outputFileName;
 
     color background_color = parse_background_color(scene_element);
     camera camera = parse_camera_information(scene_element);
@@ -23,6 +24,10 @@ void XMLParser::load_xml_File(const std::string &scenename, Scene& scene) {
     Light light = parse_light_information(scene_element);
 
     scene = Scene(background_color, camera, scene_spheres, light);
+}
+
+std::string XMLParser::get_output_name() {
+    return outputName.substr(0, outputName.size()-4).append(".ppm");
 }
 
 /* Parse the color and set it */

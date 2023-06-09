@@ -14,7 +14,7 @@ class XMLParser{
 
 private:
     XMLDocument document;
-
+    std::string outputName;
     color parse_background_color(XMLElement *scene_element);
     camera parse_camera_information(XMLElement *scene_element);
     std::vector<Sphere> parse_scene_objects(XMLElement *pElement);
@@ -23,6 +23,7 @@ private:
 public:
     XMLParser();
     void load_xml_File(const std::string&, Scene& scene);
+    std::string get_output_name();
 };
 
 
