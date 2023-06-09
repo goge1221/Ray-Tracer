@@ -19,10 +19,9 @@ private:
     static color
     ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light) {
         hit_information hitInformation;
-        const double infinity = std::numeric_limits<double>::infinity();
 
         for (const auto &sphere: spheres) {
-            if (sphere.hit_by_ray(camera_ray, 0, infinity, hitInformation)) {
+            if (sphere.hit_by_ray(camera_ray, hitInformation)) {
 
                 vec3 finalColor = calculate_ambient_color(light, sphere.get_material());
 
@@ -52,15 +51,12 @@ private:
         vec3 lightVector = -normalize(light.getParallelLightDirection());
 
         ray fromPointOnSphereToLight(positionOnSphere, lightVector);
-        const double infinity = std::numeric_limits<double>::infinity();
 
         hit_information hitInformationFromPoint;
         for (const auto &sphere1: spheres) {
             if (sphere1 == currentSphere) continue;
-            if (sphere1.hit_by_ray(fromPointOnSphereToLight,0, infinity, hitInformationFromPoint)) {
-                if (hitInformationFromPoint.discriminant > 0) {
+            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint)) {
                     return true;
-                }
             }
         }
         return false;

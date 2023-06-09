@@ -16,6 +16,7 @@ private:
     double radius;
     point3 position;
     Material material;
+    const double infinity = std::numeric_limits<double>::infinity();
 
 public:
     Sphere(double radius, const point3 &position, Material material, int id) : radius(radius), position(position),
@@ -23,32 +24,33 @@ public:
 
     Material get_material() const { return material; };
 
-    bool hit_by_ray(const ray &ray, double t_min, double t_max, hit_information &hit_information) const {
+    bool hit_by_ray(const ray &ray, hit_information &hit_information) const {
         vec3 directionVector = ray.origin() - position;
         double a = dot(ray.direction(), ray.direction());
         double b = 2.0 * dot(directionVector, ray.direction());
         double c = dot(directionVector, directionVector) - radius * radius;
 
         double discriminant = b * b - 4 * a * c;
-        if (discriminant < 0)
-            return false;
-
-        hit_information.discriminant = discriminant;
+        if (discriminant < 0) return false;
 
         // Find the nearest root that lies in the acceptable range
         double sqrtDiscriminant = sqrt(discriminant);
         double root = (-b - sqrtDiscriminant) / (2.0 * a);
-        if (root < t_min || root > t_max) {
+
+        if (!root_is_in_range(root)) {
             root = (-b + sqrtDiscriminant) / (2.0 * a);
-            if (root < t_min || root > t_max)
+            if (!root_is_in_range(root))
                 return false;
         }
-        hit_information.t = root;
+
         hit_information.hitPoint = ray.at(root);
         hit_information.normal = (hit_information.hitPoint - position) / radius;
         return true;
     }
 
+    bool root_is_in_range(double root) const{
+        return (root > 0 && root < infinity);
+    }
 
     bool operator==(const Sphere &otherSphere) const {
         return otherSphere.id == this->id;

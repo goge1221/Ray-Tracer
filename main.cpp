@@ -7,7 +7,6 @@
 #include "parser/XMLParser.h"
 #include "ColorCalculator.h"
 
-
 void load_element_from_filepath(const std::string& path){
     Scene scene;
     XMLParser xmlParser;
@@ -36,7 +35,22 @@ void load_element_from_filepath(const std::string& path){
 }
 
 void output_black_image(){
-    std::cout << "Black image\n";
+
+    const int image_width = 512;
+    const int image_height = 512;
+
+    std::string outputName = "black_image.ppm";
+    std::ofstream ppmFile(outputName);
+
+    ppmFile << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+
+    for (int j = image_height-1; j >= 0; --j) {
+        for (int i = 0; i < image_width; ++i) {
+            ppmFile << 0.0 << ' ' << 0.0 << ' ' << 0.0 << '\n';
+        }
+    }
+    ppmFile.close();
+    std::cerr << "\nDone.\n";
 }
 
 int main() {
@@ -45,22 +59,24 @@ int main() {
     std::cout << "1. Output a black image\n";
     std::cout << "2. Load Scene from XML File\n";
 
-    int option;
-    std::cin >> option;
+    int user_option;
+    std::cin >> user_option;
 
-    while(option != 1 && option != 2){
-        std::cout << "Invalid input! Please press either 1 or 2\n";
-        std::cin >> option;
+    while(user_option != 1 && user_option != 2){
+        std::cout << "Invalid input! Please press either 1 for outputting a black image or 2 to load a scene\n";
+        std::cin >> user_option;
     }
 
-    if (option == 1) {
+    if (user_option == 1) {
         output_black_image();
-    } else if (option == 2) {
+    } else if (user_option == 2) {
         std::cin.ignore();
         std::string filePath;
         std::cout << "Enter the path to the XML file: ";
         std::getline(std::cin, filePath);
         load_element_from_filepath(filePath);
+        std::cout << filePath.substr(filePath.find_last_of('/')+1, filePath.size()-4);
+        std::cout << " outputted into the directory cmake-build-debug directory as a PPM file.\n";
     }
 
 

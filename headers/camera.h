@@ -27,6 +27,30 @@ private:
 
 public:
 
+    ray get_ray(double u, double v) const {
+        return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
+    }
+
+    void initialize_camera(double horizontal_res, double vertical_res){
+        aspect_ratio = horizontal_res / vertical_res;
+        image_width = horizontal_res;
+        image_height = vertical_res;
+
+        auto theta = camera_angle * pi / 180.0;
+        auto h = tan(theta);
+        viewport_width = 2.0 * h;
+        viewport_height = viewport_width / aspect_ratio;
+
+        vec3 camera_to_look_at_vec = normalize(camera_position - look_at);
+        vec3 h_direction = normalize(cross(up, camera_to_look_at_vec));
+        vec3 v_direction = cross(camera_to_look_at_vec, h_direction);
+
+        horizontal = viewport_width * h_direction;
+        vertical = viewport_height * v_direction;
+        lower_left_corner = camera_position - horizontal/2 - vertical/2 - camera_to_look_at_vec;
+    }
+
+
     void set_position(point3& received_camera_position){
         camera_position = received_camera_position;
     }
@@ -41,31 +65,6 @@ public:
 
     void set_camera_angle(double angle){
         camera_angle = angle;
-    }
-
-    ray get_ray(double u, double v) const {
-        return {camera_position, lower_left_corner + u*horizontal + v*vertical - camera_position};
-    }
-
-
-    void initialize_camera(double horizontal_res, double vertical_res){
-        aspect_ratio = horizontal_res / vertical_res;
-        image_width = horizontal_res;
-        image_height = vertical_res;
-
-        auto theta = camera_angle * pi / 180.0;
-        auto h = tan(theta);
-        viewport_width = 2.0 * h;
-        viewport_height = viewport_width / aspect_ratio;
-
-        auto w = normalize(camera_position - look_at);
-        auto u = normalize(cross(up, w));
-        auto v = cross(w, u);
-
-        horizontal = viewport_width * u;
-        vertical = viewport_height * v;
-        lower_left_corner = camera_position - horizontal/2 - vertical/2 - w;
-
     }
 
     double get_image_width() const{

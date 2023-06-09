@@ -8,11 +8,8 @@
 #include "../headers/ray.h"
 
 struct hit_information{
-
     point3 hitPoint;
     vec3 normal;
-    double t{};
-    double discriminant{};
 };
 
 #endif //HIT_INFORMATIONS_H
