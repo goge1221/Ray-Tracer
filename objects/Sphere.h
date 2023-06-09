@@ -34,7 +34,6 @@ public:
             return false;
 
         hit_information.discriminant = discriminant;
-        hit_information.radius = radius;
 
         // Find the nearest root that lies in the acceptable range
         double sqrtDiscriminant = sqrt(discriminant);
@@ -44,13 +43,9 @@ public:
             if (root < t_min || root > t_max)
                 return false;
         }
-
         hit_information.t = root;
         hit_information.hitPoint = ray.at(root);
-
-        vec3 outward_normal = (hit_information.hitPoint - position) / radius;
-        hit_information.set_face_normal(ray, outward_normal);
-
+        hit_information.normal = (hit_information.hitPoint - position) / radius;
         return true;
     }
 

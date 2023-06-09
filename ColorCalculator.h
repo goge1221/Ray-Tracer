@@ -58,22 +58,13 @@ private:
         for (const auto &sphere1: spheres) {
             if (sphere1 == currentSphere) continue;
             if (sphere1.hit_by_ray(fromPointOnSphereToLight,0, infinity, hitInformationFromPoint)) {
-                if (hitInformationFromPoint.discriminant > 0 && hitInformationFromPoint.front_face) {
-                    // Überprüfe, ob der getroffene Punkt auf der Oberfläche der Kugel zwischen dem Punkt des Lichts und der Kugel liegt
-                    point3 pointOnOtherSphere = hitInformationFromPoint.hitPoint;
-                    vec3 lightToPointVector = pointOnOtherSphere - fromPointOnSphereToLight.origin();
-                    double distanceToOtherSphere = lightToPointVector.length();
-
-                    if (distanceToOtherSphere > lightVector.length()) {
-                        return true;
-                    }
+                if (hitInformationFromPoint.discriminant > 0) {
+                    return true;
                 }
             }
         }
         return false;
     }
-
-
 
     static vec3 reflect(vec3 lightDirection, vec3 hitPointNormal) {
         return ((2.0 * dot(hitPointNormal, lightDirection)) * hitPointNormal) - lightDirection;
