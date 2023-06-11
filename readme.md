@@ -1,30 +1,31 @@
 # Raytracer by Andrei Goje 12032793
 
-#### 1. Claims: T1 - T5 fully implemented
-#### 2. Tested in CLion and in the Mac terminal also on almighty. 
+## Features Implemented
+- Claims: T1 - T5 fully implemented.
 
+## Compilation Instructions
+1. The project is located at: `/home/andreig01/Desktop/GFX`.
+2. Navigate to the build folder.
+3. Use the command `./Lab_3_` to run the program.
+4. You will be prompted to provide the file path of the XML file you want to use.
+    - Example XML file paths:
+        - `/home/andreig01/Desktop/GFX/scenes/personal_example.xml`
+        - `/home/andreig01/Desktop/GFX/scenes/example1.xml`
+        - `/home/andreig01/Desktop/GFX/scenes/example2.xml`
+        - `/home/andreig01/Desktop/GFX/scenes/example3.xml`
+5. The rendered images will be saved as PPM files in the build directory.
 
-**How to compile?**
+## Troubleshooting
+If you encounter any issues, you can try the following steps:
 
-The project is located under: /home/andreig01/Desktop/GFX
+1. Delete the existing build folder.
+2. Execute the following commands in order:
+    - `mkdir build`
+    - `cd build`
+    - `cmake ..`
+    - `make`
+3. Once the build process completes, run the program normally as stated above.
 
-If you cd inside the build folder you can use the command **_./Lab_3_** to run the program.
-
-After this you will be asked to give the file path of the xml file you want to use. 
-My files are located in the scenes folder so you can copy and paste the location from here and paste it into the terminal: 
-
-/home/andreig01/Desktop/GFX/scenes/personal_example.xml
-/home/andreig01/Desktop/GFX/scenes/example1.xml
-/home/andreig01/Desktop/GFX/scenes/example2.xml
-/home/andreig01/Desktop/GFX/scenes/example3.xml
-
-All of the files will be saved in the form of a PPM file in the build directory. 
-
-If something is now working you can try and delete the build folder then execute following commands: 
-
-1. mkdir build
-2. cd build
-3. cmake ..
-4. make
-
-After this try to run the program normally. 
+## Remarks
+- XML Parsing: The TinyXML library (cpp and h) were used for parsing XML files. You can find it at: [https://github.com/leethomason/tinyxml2](https://github.com/leethomason/tinyxml2).
+- Structure and Geometry: The structure of the code and the geometry calculations, including camera ray calculation and collision checking formulas, were inspired and adapted from the book "Ray Tracing in One Weekend," available at: [https://raytracing.github.io/books/RayTracingInOneWeekend.html](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
