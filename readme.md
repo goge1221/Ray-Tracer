@@ -2,11 +2,12 @@
 
 ## Features Implemented
 - Claims: T1 - T5 fully implemented.
+- T2 is saved under the name: personal_example.xml
 
 ## Compilation Instructions
 1. The project is located at: `/home/andreig01/Desktop/GFX`.
 2. Navigate to the build folder.
-3. Use the command `./Lab_3_` to run the program.
+3. Use the command `./Lab_3` to run the program.
 4. You will be prompted to provide the file path of the XML file you want to use.
     - Example XML file paths:
         - `/home/andreig01/Desktop/GFX/scenes/personal_example.xml`
