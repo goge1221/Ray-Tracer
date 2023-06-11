@@ -38,7 +38,6 @@ int main() {
 
     std::cout << "Hello and welcome to the raytracing program of Andrei Goje 12032793\n";
     std::cout << "Enter the path to the XML file: ";
-    std::cin.ignore();
     std::string filePath;
     std::getline(std::cin, filePath);
     load_element_from_filepath(filePath);
