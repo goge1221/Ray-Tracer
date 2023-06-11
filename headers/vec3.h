@@ -11,15 +11,21 @@
 using std::sqrt;
 
 class vec3 {
+
+private:
+    double coord[3];
+
 public:
     // Constructors
     vec3() : coord{0, 0, 0} {}
+
     vec3(double x, double y, double z) : coord{x, y, z} {}
 
 
     vec3 operator-() const { return {-x(), -y(), -z()}; }
 
     double operator[](int i) const { return coord[i]; }
+
     double &operator[](int i) { return coord[i]; }
 
     vec3 &operator+=(const vec3 &other) {
@@ -30,7 +36,7 @@ public:
     }
 
     vec3 &operator*=(const double t) {
-        for (double & i : coord) i *= t;
+        for (double &i: coord) i *= t;
         return *this;
     }
 
@@ -59,14 +65,13 @@ public:
 
     //Getters
     double x() const { return coord[0]; }
+
     double y() const { return coord[1]; }
+
     double z() const { return coord[2]; }
 
-private:
-    double coord[3];
 };
 
-// Type aliases for vec3
 using point3 = vec3;
 using color = vec3;
 

@@ -9,7 +9,7 @@ class Material{
 
 private:
 
-    color color;
+    color m_color;
     double ka = 0.0;
     double kd = 0.0;
     double ks = 0.0;
@@ -23,7 +23,7 @@ public:
 
 public:
     const vec3 &getColor() const {
-        return color;
+        return m_color;
     }
 
     double getKa() const {
@@ -55,7 +55,7 @@ public:
     }
 
     void setColor(const vec3 &color) {
-        this->color = color;
+        m_color = color;
     }
 
     void setPhongElement(double ka, double kd, double ks, int exponent){

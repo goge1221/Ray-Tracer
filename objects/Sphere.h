@@ -16,11 +16,11 @@ private:
     double radius;
     point3 position;
     Material material;
-    const double infinity = std::numeric_limits<double>::infinity();
+    const double infinity = 1.79769e+308;
 
 public:
     Sphere(double radius, const point3 &position, Material material, int id) : radius(radius), position(position),
-                                                                       material(material), id(id) {}
+                                                                               material(material), id(id) {}
 
     Material get_material() const { return material; };
 
@@ -33,7 +33,6 @@ public:
         double discriminant = b * b - 4 * a * c;
         if (discriminant < 0) return false;
 
-        // Find the nearest root that lies in the acceptable range
         double sqrtDiscriminant = sqrt(discriminant);
         double root = (-b - sqrtDiscriminant) / (2.0 * a);
 
@@ -48,7 +47,7 @@ public:
         return true;
     }
 
-    bool root_is_in_range(double root) const{
+    bool root_is_in_range(double root) const {
         return (root > 0 && root < infinity);
     }
 

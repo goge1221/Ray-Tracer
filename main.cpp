@@ -7,7 +7,7 @@
 #include "parser/XMLParser.h"
 #include "ColorCalculator.h"
 
-void load_element_from_filepath(const std::string& path){
+void load_element_from_filepath(const std::string &path) {
     Scene scene;
     XMLParser xmlParser;
     xmlParser.load_xml_File(path, scene);
@@ -22,7 +22,6 @@ void load_element_from_filepath(const std::string& path){
     ppmFile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
     for (int j = image_height - 1; j >= 0; --j) {
-        std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
         for (int i = 0; i < image_width; ++i) {
             auto u = double(i) / (image_width - 1);
             auto v = double(j) / (image_height - 1);
@@ -34,50 +33,16 @@ void load_element_from_filepath(const std::string& path){
     std::cerr << "\nDone.\n";
 }
 
-void output_black_image(){
-
-    const int image_width = 512;
-    const int image_height = 512;
-
-    std::string outputName = "black_image.ppm";
-    std::ofstream ppmFile(outputName);
-
-    ppmFile << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-
-    for (int j = image_height-1; j >= 0; --j) {
-        for (int i = 0; i < image_width; ++i) {
-            ppmFile << 0.0 << ' ' << 0.0 << ' ' << 0.0 << '\n';
-        }
-    }
-    ppmFile.close();
-    std::cerr << "\nDone.\n";
-}
 
 int main() {
 
-    std::cout << "Hello and welcome to the raytracing program of Andrei Goje 12032793\nPick an option: (Press 1 or 2 then enter)\n";
-    std::cout << "1. Output a black image\n";
-    std::cout << "2. Load Scene from XML File\n";
-
-    int user_option;
-    std::cin >> user_option;
-
-    while(user_option != 1 && user_option != 2){
-        std::cout << "Invalid input! Please press either 1 for outputting a black image or 2 to load a scene\n";
-        std::cin >> user_option;
-    }
-
-    if (user_option == 1) {
-        output_black_image();
-    } else if (user_option == 2) {
-        std::cin.ignore();
-        std::string filePath;
-        std::cout << "Enter the path to the XML file: ";
-        std::getline(std::cin, filePath);
-        load_element_from_filepath(filePath);
-        std::cout << filePath.substr(filePath.find_last_of('/')+1, filePath.size()-4);
-        std::cout << " outputted into the directory cmake-build-debug directory as a PPM file.\n";
-    }
-
+    std::cout << "Hello and welcome to the raytracing program of Andrei Goje 12032793\n";
+    std::cout << "Enter the path to the XML file: ";
+    std::cin.ignore();
+    std::string filePath;
+    std::getline(std::cin, filePath);
+    load_element_from_filepath(filePath);
+    std::cout << filePath.substr(filePath.find_last_of('/') + 1, filePath.size() - 4);
+    std::cout << " outputted into the directory cmake-build-debug directory as a PPM file.\n";
 
 }
