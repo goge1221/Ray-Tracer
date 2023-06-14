@@ -5,11 +5,11 @@
 - T2 is saved under the name: personal_example.xml
 
 ## Compilation Instructions
-1. The project is located at: `/home/andreig01/Desktop/GFX`.
+1. The project is located on almighty at: `/home/andreig01/Desktop/GFX`. 
 2. Navigate to the build folder.
 3. Use the command `./Lab_3` to run the program.
 4. You will be prompted to provide the file path of the XML file you want to use.
-    - Example XML file paths:
+    - XML file paths for almighty:
         - `/home/andreig01/Desktop/GFX/scenes/personal_example.xml`
         - `/home/andreig01/Desktop/GFX/scenes/example1.xml`
         - `/home/andreig01/Desktop/GFX/scenes/example2.xml`
