@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sstream>
 #include <string>
 #include "../headers/vec3.h"
 
@@ -41,6 +42,14 @@ public:
 
             if (line[0] == '#'){
                 std::cout << "skipped   ";
+            }
+            else if(line[0] == 'v'){
+                float x, y, z;
+                char skip;
+                std::stringstream ss(line);
+                ss >> skip >> x >> y >> z;
+                vec3 vertex(x, y, z);
+                temp_vertices.push_back(vertex);
             }
         }
 
