@@ -38,8 +38,8 @@ void load_element_from_filepath(const std::string &path) {
 int main() {
 
     OBJParser objParser;
-    std::vector<vec3> vec;
-    objParser.loadOBJ("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/open_room.obj", vec, vec, vec);
+    std::vector<vec3> vec, vec1, vec2;
+    objParser.loadOBJ("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/open_room.obj", vec, vec1, vec2);
 
 /*    std::cout << "Hello and welcome to the raytracing program of Andrei Goje 12032793\n";
     std::cout << "Enter the path to the XML file: ";
