@@ -5,6 +5,11 @@
 #ifndef COLORCALCULATOR_H
 #define COLORCALCULATOR_H
 
+#include "objects/Square.h"
+#include "objectParser/rightWall.h"
+#include "objectParser/behindWall.h"
+#include "objectParser/bottomWall.h"
+
 class ColorCalculator {
 
 public:

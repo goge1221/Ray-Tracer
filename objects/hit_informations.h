@@ -10,6 +10,9 @@
 struct hit_information{
     point3 hitPoint;
     vec3 normal;
+    double u;
+    double v;
+    double t;
 };
 
 #endif //HIT_INFORMATIONS_H
