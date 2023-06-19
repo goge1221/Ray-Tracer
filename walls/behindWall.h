@@ -10,7 +10,7 @@
 
 class behindWall{
 public:
-    double x0, x1, y0, y1, k;
+    double x0{}, x1{}, y0{}, y1{}, k{};
     const double infinity = 1.79769e+308;
 
     behindWall() = default;

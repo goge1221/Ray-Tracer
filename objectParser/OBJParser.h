@@ -97,10 +97,6 @@ public:
 
         }
 
-        std::cout << "\nout_vertices: " << out_vertices.size();
-        std::cout << "\nout_uvs: " << out_uvs.size();
-        std::cout << "\nout_normals: " << out_normals.size();
-
     }
 
 };

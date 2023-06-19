@@ -36,6 +36,10 @@ public:
         this->max_bounces = v_max_bounces;
     }
 
+    int get_max_bounces() const{
+        return max_bounces;
+    }
+
     void initialize_camera(double horizontal_res, double vertical_res) {
         aspect_ratio = horizontal_res / vertical_res;
         image_width = horizontal_res;

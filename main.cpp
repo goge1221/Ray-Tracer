@@ -8,6 +8,8 @@
 #include "ColorCalculator.h"
 #include "objectParser/OBJParser.h"
 
+
+
 void load_element_from_filepath(const std::string &path) {
     Scene scene;
     XMLParser xmlParser;

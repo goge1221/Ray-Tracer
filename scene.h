@@ -37,6 +37,10 @@ public:
         return cam.get_ray(u, v);
     }
 
+    int get_max_depth() const{
+        return cam.get_max_bounces();
+    }
+
     std::vector<Sphere> get_scene_spheres() const{
         return scene_spheres;
     }

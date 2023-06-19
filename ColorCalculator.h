@@ -16,19 +16,21 @@ public:
 
     static color get_color_for_pixel(const Scene &scene, double u, double v) {
         ray camera_ray = scene.get_camera_ray(u, v);
-        return ray_color(camera_ray, scene.get_scene_spheres(), scene.get_background_color(), scene.get_light());
+        return ray_color(camera_ray, scene.get_scene_spheres(), scene.get_background_color(), scene.get_light(), scene.get_max_depth());
     }
 
 
 private:
     static color
-    ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light) {
+    ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light, int max_depth) {
         hit_information hitInformation;
-
         for (const auto &sphere: spheres) {
             if (sphere.hit_by_ray(camera_ray, hitInformation)) {
 
-                vec3 finalColor = calculate_ambient_color(light, sphere.get_material());
+                color finalColor(0,0,0);
+                if(max_depth < 0) return finalColor;
+
+                finalColor = calculate_ambient_color(light, sphere.get_material());
 
                 if (light.hasParallelLights()) {
                     color diffuse = calculate_diffuse_component(light, hitInformation, sphere.get_material());
@@ -56,7 +58,6 @@ private:
                                                                        sphere.get_material(),
                                                                        camera_ray);
                     }
-                    std::cout << "\npointlight: " << diffuse.x() << " " << diffuse.y() << " " << diffuse.z();
                     finalColor += diffuse;
                     finalColor += specular;
                 }
@@ -64,6 +65,17 @@ private:
                 return finalColor;
             }
         }
+
+
+        //heurika
+        behindWall wall(-5, 5, -2.5, 7.5, -10);
+        if (wall.hit(camera_ray, hitInformation)) return {1, 1, 1};
+        rightWall rwall(-2.5, 7.5, -10, 0, 5);
+        if (rwall.hit(camera_ray, hitInformation)) return {1, 1, 1};
+        bottomWall bwall(-5, 5, -10, 0, -2.5);
+        if (bwall.hit(camera_ray, hitInformation)) return {1, 1, 1};
+
+
         return background_color;
     }
 

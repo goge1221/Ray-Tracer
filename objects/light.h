@@ -27,10 +27,6 @@ public:
     void addPointLight(color lightColor, point3 lightPosition){
         pointLightColors.push_back(lightColor);
         pointLightPositions.push_back(lightPosition);
-
-        std::cout << "\ncolor with: " << lightColor.x() << " " << lightColor.y() << " " << lightColor.z();
-        std::cout << "\nposition with: " << lightPosition.x() << " " << lightPosition.y() << " " << lightPosition.z();
-
     }
 
     bool hasPointLights(){
