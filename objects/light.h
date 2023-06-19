@@ -24,6 +24,19 @@ public:
         Light::parallelLightColor = lightColor;
     }
 
+    void addPointLight(color lightColor, point3 lightPosition){
+        pointLightColors.push_back(lightColor);
+        pointLightPositions.push_back(lightPosition);
+
+        std::cout << "\ncolor with: " << lightColor.x() << " " << lightColor.y() << " " << lightColor.z();
+        std::cout << "\nposition with: " << lightPosition.x() << " " << lightPosition.y() << " " << lightPosition.z();
+
+    }
+
+    std::pair<color, point3> getPointLightAtPosition(int position){
+        return {pointLightColors.at(position), pointLightPositions.at(position)};
+    }
+
     const vec3 &getParallelLightDirection() const {
         return parallelLightDirection;
     }
@@ -44,6 +57,8 @@ private:
     color ambientLightColor;
     color parallelLightColor;
     vec3 parallelLightDirection;
+    std::vector<color> pointLightColors;
+    std::vector<point3> pointLightPositions;
 
 };
 

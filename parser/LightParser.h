@@ -17,11 +17,37 @@ public:
         light.setAmbientLightColor(getAmbientLightColor(light_element));
         light.setParallelLightColor(getParallelLightColor(light_element));
         light.setParallelLightDirection(getParallelLightDirection(light_element));
+        parsePointLight(light_element, light);
 
         return light;
     }
 
 private:
+
+    static void parsePointLight(XMLElement *lights_element, Light &light) {
+        auto point_light = lights_element->FirstChildElement("point_light");
+
+        while(point_light) {
+            auto color_element = point_light->FirstChildElement("color");
+            if (!color_element) continue;
+
+            double r, g, b;
+            color_element->QueryAttribute("r", &r);
+            color_element->QueryAttribute("g", &g);
+            color_element->QueryAttribute("b", &b);
+
+            auto position_element = point_light->FirstChildElement("position");
+            if (!position_element) continue;
+            double x, y, z;
+            position_element->QueryAttribute("x", &x);
+            position_element->QueryAttribute("y", &y);
+            position_element->QueryAttribute("z", &z);
+
+            light.addPointLight(color(r,g,b), point3(x,y,z));
+
+            point_light = point_light->NextSiblingElement("point_light");
+        }
+    }
 
     static color getParallelLightDirection(XMLElement *lights_element) {
         auto ambient_element = lights_element->FirstChildElement("parallel_light");
