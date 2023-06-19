@@ -44,13 +44,21 @@ private:
                     }
                 }
 
-                if (light.hasPointLights()){
-                    color diffuse(0,0,0);
+                if (light.hasPointLights()) {
+                    color diffuse(0, 0, 0);
+                    color specular(0, 0, 0);
                     for (int i = 0; i < 2; ++i) {
-                        diffuse += calculate_diffuse_component_point(light.getPointLightAtPosition(i).second, hitInformation, sphere.get_material());
+                        diffuse += calculate_diffuse_component_point(light.getPointLightAtPosition(i).second,
+                                                                     hitInformation, sphere.get_material());
+                        specular += calculate_specular_component_point(light.getPointLightAtPosition(i).second,
+                                                                       light.getPointLightAtPosition(i).first,
+                                                                       hitInformation,
+                                                                       sphere.get_material(),
+                                                                       camera_ray);
                     }
                     std::cout << "\npointlight: " << diffuse.x() << " " << diffuse.y() << " " << diffuse.z();
                     finalColor += diffuse;
+                    finalColor += specular;
                 }
                 // Return the sum of the ambient, diffuse, and specular components.
                 return finalColor;
@@ -71,7 +79,7 @@ private:
         for (const auto &sphere1: spheres) {
             if (sphere1 == currentSphere) continue;
             if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint)) {
-                    return true;
+                return true;
             }
         }
         return false;
@@ -96,7 +104,24 @@ private:
     }
 
     static color
-    calculate_diffuse_component_point(point3 lightPoint, const hit_information &hitInformation, const Material &material) {
+    calculate_specular_component_point(const point3 &lightPoint, const color &lightColor,
+                                       const hit_information &hitInformation, const Material &material,
+                                       const ray &camera_ray) {
+
+        vec3 lightDir = normalize(hitInformation.hitPoint - lightPoint);
+        vec3 reflectionDir = reflect(lightDir, hitInformation.normal);
+        double dotpr = dot(normalize(camera_ray.direction()), normalize(reflectionDir));
+        if (dotpr < 0) dotpr = 0;
+
+        vec3 specularTerm = lightColor * std::pow(dotpr, material.getExponent() * material.getKs());
+
+        return specularTerm;
+    }
+
+
+    static color
+    calculate_diffuse_component_point(point3 lightPoint, const hit_information &hitInformation,
+                                      const Material &material) {
         vec3 lightVector = hitInformation.hitPoint - lightPoint;
 
         // Calculate the direction of the light ray.
