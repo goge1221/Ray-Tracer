@@ -5,9 +5,6 @@
 #ifndef LAB_3_OBJPARSER_H
 #define LAB_3_OBJPARSER_H
 
-//
-// Created by parallels on 6/14/23.
-//
 #include <iostream>
 #include <fstream>
 #include <vector>

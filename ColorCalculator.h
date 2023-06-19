@@ -6,9 +6,9 @@
 #define COLORCALCULATOR_H
 
 #include "objects/Square.h"
-#include "objectParser/rightWall.h"
-#include "objectParser/behindWall.h"
-#include "objectParser/bottomWall.h"
+#include "walls/rightWall.h"
+#include "walls/behindWall.h"
+#include "walls/bottomWall.h"
 
 class ColorCalculator {
 

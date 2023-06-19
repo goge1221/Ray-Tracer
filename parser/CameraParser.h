@@ -5,13 +5,13 @@
 #ifndef CAMERA_PARSER_H
 #define CAMERA_PARSER_H
 
-class CameraParser{
+class CameraParser {
 
 private:
-    XMLElement* camera_element;
+    XMLElement *camera_element;
 
 public:
-    CameraParser(XMLElement *scene_element, camera& camera) {
+    CameraParser(XMLElement *scene_element, camera &camera) {
         camera_element = scene_element->FirstChildElement("camera");
 
         point3 camera_position = get_camera_position();
@@ -26,16 +26,27 @@ public:
         double camera_angle = get_camera_angle();
         camera.set_camera_angle(camera_angle);
 
+        int max_bounces = get_max_bounces();
+        camera.set_max_bounces(max_bounces);
+
         std::pair<double, double> resolution = get_camera_resolutions();
         camera.initialize_camera(resolution.first, resolution.second);
 
     }
 
+    int get_max_bounces() {
+        XMLElement *max_bounces_element = camera_element->FirstChildElement("max_bounces");
+        if (!max_bounces_element) return 0;
 
-    point3 get_camera_position(){
+        int max_bounces = 0;
+        max_bounces_element->QueryIntAttribute("n", &max_bounces);
+        return max_bounces;
+    }
+
+    point3 get_camera_position() {
         float x = 0.0, y = 0.0, z = 0.0;
 
-        XMLElement* position_element = camera_element->FirstChildElement("position");
+        XMLElement *position_element = camera_element->FirstChildElement("position");
 
         if (position_element) {
             position_element->QueryFloatAttribute("x", &x);
@@ -46,10 +57,10 @@ public:
         return camera_position;
     }
 
-    vec3 get_camera_lookat(){
+    vec3 get_camera_lookat() {
         float x = 0.0, y = 0.0, z = 0.0;
 
-        XMLElement* look_at_element = camera_element->FirstChildElement("lookat");
+        XMLElement *look_at_element = camera_element->FirstChildElement("lookat");
         if (look_at_element) {
             look_at_element->QueryFloatAttribute("x", &x);
             look_at_element->QueryFloatAttribute("y", &y);
@@ -59,11 +70,11 @@ public:
         return look_at;
     }
 
-    vec3 get_camera_up_position(){
+    vec3 get_camera_up_position() {
         float x = 0.0, y = 0.0, z = 0.0;
 
-        XMLElement* up_element = camera_element->FirstChildElement("up");
-        if (up_element){
+        XMLElement *up_element = camera_element->FirstChildElement("up");
+        if (up_element) {
             up_element->QueryFloatAttribute("x", &x);
             up_element->QueryFloatAttribute("y", &y);
             up_element->QueryFloatAttribute("z", &z);
@@ -72,21 +83,21 @@ public:
         return up_position;
     }
 
-    double get_camera_angle(){
-        XMLElement* angle_element = camera_element->FirstChildElement("horizontal_fov");
+    double get_camera_angle() {
+        XMLElement *angle_element = camera_element->FirstChildElement("horizontal_fov");
         double camera_angle = 40;
-        if (angle_element){
+        if (angle_element) {
             angle_element->QueryAttribute("angle", &camera_angle);
         }
         return camera_angle;
     }
 
-    std::pair<double, double> get_camera_resolutions(){
-        XMLElement* resolution_element = camera_element->FirstChildElement("resolution");
+    std::pair<double, double> get_camera_resolutions() {
+        XMLElement *resolution_element = camera_element->FirstChildElement("resolution");
 
         std::pair<double, double> resolution(0.0, 0.0);
 
-        if (resolution_element){
+        if (resolution_element) {
             resolution_element->QueryAttribute("horizontal", &resolution.first);
             resolution_element->QueryAttribute("vertical", &resolution.second);
         }

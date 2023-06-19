@@ -41,7 +41,7 @@ int main() {
     std::vector<vec3> vec, vec1, vec2;
     objParser.loadOBJ("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/open_room.obj", vec, vec1, vec2);
 
-    load_element_from_filepath("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/example2.xml");
+    load_element_from_filepath("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/example4.xml");
 
 
 

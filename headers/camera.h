@@ -24,11 +24,16 @@ private:
     double viewport_height = 0.0;
     double viewport_width = 0.0;
     double pi = 3.1415926535897932385;
+    int max_bounces;
 
 public:
 
     ray get_ray(double u, double v) const {
         return {camera_position, lower_left_corner + u * horizontal + v * vertical - camera_position};
+    }
+
+    void set_max_bounces(int v_max_bounces){
+        this->max_bounces = v_max_bounces;
     }
 
     void initialize_camera(double horizontal_res, double vertical_res) {
