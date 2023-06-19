@@ -33,7 +33,11 @@ public:
 
     }
 
-    std::pair<color, point3> getPointLightAtPosition(int position){
+    bool hasPointLights(){
+        return !(pointLightPositions.empty() && pointLightColors.empty());
+    }
+
+    std::pair<color, point3> getPointLightAtPosition(int position) const{
         return {pointLightColors.at(position), pointLightPositions.at(position)};
     }
 

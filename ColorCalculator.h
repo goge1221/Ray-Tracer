@@ -43,12 +43,22 @@ private:
                         finalColor += specular;
                     }
                 }
+
+                if (light.hasPointLights()){
+                    color diffuse(0,0,0);
+                    for (int i = 0; i < 2; ++i) {
+                        diffuse += calculate_diffuse_component_point(light.getPointLightAtPosition(i).second, hitInformation, sphere.get_material());
+                    }
+                    std::cout << "\npointlight: " << diffuse.x() << " " << diffuse.y() << " " << diffuse.z();
+                    finalColor += diffuse;
+                }
                 // Return the sum of the ambient, diffuse, and specular components.
                 return finalColor;
             }
         }
         return background_color;
     }
+
 
     static bool shouldCastShadow(const hit_information &hitInformation, const Light &light,
                                  const std::vector<Sphere> &spheres, const Sphere &currentSphere) {
@@ -84,6 +94,21 @@ private:
 
         return specularTerm;
     }
+
+    static color
+    calculate_diffuse_component_point(point3 lightPoint, const hit_information &hitInformation, const Material &material) {
+        vec3 lightVector = hitInformation.hitPoint - lightPoint;
+
+        // Calculate the direction of the light ray.
+        vec3 L = -normalize(lightVector);
+
+        // Calculate the diffuse component.
+        double Kd = dot(L, hitInformation.normal);
+        if (Kd < 0) Kd = 0;
+
+        return Kd * material.getKd() * material.getColor();
+    }
+
 
     static color
     calculate_diffuse_component(const Light &light, const hit_information &hitInformation, const Material &material) {
