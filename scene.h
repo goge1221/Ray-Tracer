@@ -10,6 +10,7 @@
 #include "headers/camera.h"
 #include "objects/Sphere.h"
 #include "objects/light.h"
+#include "objects/mesh.h"
 
 class Scene {
 
@@ -18,12 +19,13 @@ private:
     camera cam;
     std::vector<Sphere> scene_spheres;
     Light light;
+    Mesh mesh;
 
 
 public:
     Scene() = default;
-    Scene(color background_color, camera cam, std::vector<Sphere> spheres, Light light)
-            : background_color(background_color), cam(cam), scene_spheres(std::move(spheres)), light(light) {}
+    Scene(color background_color, camera cam, std::vector<Sphere> spheres, Light light, Mesh i_mesh)
+            : background_color(background_color), cam(cam), scene_spheres(std::move(spheres)), light(std::move(light)), mesh(std::move(i_mesh)) {}
 
     int get_image_width(){
         return static_cast<int>(cam.get_image_width());
@@ -43,6 +45,10 @@ public:
 
     std::vector<Sphere> get_scene_spheres() const{
         return scene_spheres;
+    }
+
+    Mesh get_mesh(){
+        return mesh;
     }
 
     color get_background_color() const{

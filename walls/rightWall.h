@@ -8,7 +8,7 @@
 #include "../headers/ray.h"
 #include "../objects/hit_informations.h"
 
-class rightWall{
+class rightWall {
 
 public:
     double y_min{}, y_max{}, z_min{}, z_max{}, position_on_axis{};
@@ -18,14 +18,18 @@ public:
                                                                                            position_on_axis(
                                                                                                    positionOnAxis) {}
 
-    const double infinity = 1.79769e+308;
+    rightWall() = default;
 
-    bool hit(const ray& ray, hit_information& hit_info) const {
-        auto t = (position_on_axis-ray.origin().x()) / ray.direction().x();
+    double infinity = 1.79769e+308;
+
+    rightWall &operator=(const rightWall &other) = default;
+
+    bool hit(const ray &ray, hit_information &hit_info) const {
+        auto t = (position_on_axis - ray.origin().x()) / ray.direction().x();
         if (t < 0 || t > infinity)
             return false;
-        auto y = ray.origin().y() + t*ray.direction().y();
-        auto z = ray.origin().z() + t*ray.direction().z();
+        auto y = ray.origin().y() + t * ray.direction().y();
+        auto z = ray.origin().z() + t * ray.direction().z();
         if (y < y_min || y > y_max || z < z_min || z > z_max)
             return false;
         hit_info.normal = vec3(1, 0, 0);

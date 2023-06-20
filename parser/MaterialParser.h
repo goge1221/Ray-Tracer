@@ -11,9 +11,9 @@ class MaterialParser {
 
 public:
 
-    static void get_material(XMLElement *sphereElement, Material &material) {
+    static void get_material(XMLElement *element, Material &material) {
 
-        XMLElement *materialElement = sphereElement->FirstChildElement("material_solid");
+        XMLElement *materialElement = element->FirstChildElement("material_solid");
 
         if (materialElement) {
             parseColor(materialElement, material);

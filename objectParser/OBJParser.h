@@ -19,7 +19,7 @@ class OBJParser {
 public:
     OBJParser() = default;
 
-    bool loadOBJ(const char *path, std::vector<vec3> &vertices) {
+    static bool loadOBJ(const char *path, std::vector<vec3> &vertices) {
 
         std::ifstream file(path);
 

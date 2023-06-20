@@ -6,6 +6,9 @@
 #include "headers/camera.h"
 #include "parser/XMLParser.h"
 #include "ColorCalculator.h"
+#include "objectParser/OBJParser.h"
+
+
 
 void load_element_from_filepath(const std::string &path) {
     Scene scene;

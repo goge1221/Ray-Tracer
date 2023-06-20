@@ -24,7 +24,7 @@ void XMLParser::load_xml_File(const std::string &path, Scene& scene) {
     Light light = parse_light_information(scene_element);
 
     Mesh mesh = parse_mesh_informations(scene_element);
-    scene = Scene(background_color, camera, scene_spheres, light);
+    scene = Scene(background_color, camera, scene_spheres, light, mesh);
 }
 
 std::string XMLParser::get_output_name() {
@@ -63,7 +63,13 @@ Mesh XMLParser::parse_mesh_informations(tinyxml2::XMLElement *sceneElement) {
     Mesh v_mesh;
     std::string scenesPath = "/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/";
     std::string completePath = scenesPath + std::string(objName);
-    v_mesh.parse_vertices("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/open_room.obj");
+    v_mesh.parse_vertices(completePath.c_str());
+
+    Material material;
+    MaterialParser::get_material(mesh_element, material);
+
+    v_mesh.set_material(material);
+    return v_mesh;
 }
 
 Light XMLParser::parse_light_information(XMLElement* sceneElement){

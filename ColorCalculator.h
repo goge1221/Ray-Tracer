@@ -5,7 +5,6 @@
 #ifndef COLORCALCULATOR_H
 #define COLORCALCULATOR_H
 
-#include "objects/Square.h"
 #include "walls/rightWall.h"
 #include "walls/behindWall.h"
 #include "walls/bottomWall.h"
@@ -14,15 +13,15 @@ class ColorCalculator {
 
 public:
 
-    static color get_color_for_pixel(const Scene &scene, double u, double v) {
+    static color get_color_for_pixel(Scene scene, double u, double v) {
         ray camera_ray = scene.get_camera_ray(u, v);
-        return ray_color(camera_ray, scene.get_scene_spheres(), scene.get_background_color(), scene.get_light(), scene.get_max_depth());
+        return ray_color(camera_ray, scene.get_scene_spheres(), scene.get_background_color(), scene.get_light(), scene.get_mesh(), scene.get_max_depth());
     }
 
 
 private:
     static color
-    ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light, int max_depth) {
+    ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light, Mesh mesh, int max_depth) {
         hit_information hitInformation;
         for (const auto &sphere: spheres) {
             if (sphere.hit_by_ray(camera_ray, hitInformation)) {
@@ -67,13 +66,8 @@ private:
         }
 
 
-        behindWall wall(-5, 5, -2.5, 7.5, -10);
-        if (wall.hit(camera_ray, hitInformation)) return {1, 1, 1};
-        rightWall rwall(-2.5, 7.5, -10, 0, 5);
-        if (rwall.hit(camera_ray, hitInformation)) return {1, 1, 1};
-        bottomWall bwall(-5, 5, -10, 0, -2.5);
-        if (bwall.hit(camera_ray, hitInformation)) return {1, 1, 1};
-
+        if (mesh.square_hit(camera_ray, hitInformation))
+            return {1, 1,1 };
 
         return background_color;
     }
