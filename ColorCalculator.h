@@ -67,7 +67,6 @@ private:
         }
 
 
-        //heurika
         behindWall wall(-5, 5, -2.5, 7.5, -10);
         if (wall.hit(camera_ray, hitInformation)) return {1, 1, 1};
         rightWall rwall(-2.5, 7.5, -10, 0, 5);

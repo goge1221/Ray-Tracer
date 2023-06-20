@@ -12,27 +12,26 @@
 class bottomWall{
 
 public:
-    bottomWall(double _x0, double _x1, double _z0, double _z1, double _k)
-            : x0(_x0), x1(_x1), z0(_z0), z1(_z1), k(_k){};
 
-    double x0, x1, z0, z1, k;
+    double x_min{}, x_max{}, z_min{}, z_max{}, position_on_axis{};
+
+    bottomWall(double xMin, double xMax, double zMin, double zMax, double positionOnAxis) : x_min(xMin), x_max(xMax),
+                                                                                            z_min(zMin), z_max(zMax),
+                                                                                            position_on_axis(
+                                                                                                    positionOnAxis) {}
+
     const double infinity = 1.79769e+308;
 
-
-    bool hit(const ray& r, hit_information& rec) const {
-        auto t = (k-r.origin().y()) / r.direction().y();
+    bool hit(const ray& ray, hit_information& hit_info) const {
+        auto t = (position_on_axis-ray.origin().y()) / ray.direction().y();
         if (t < 0 || t > infinity)
             return false;
-        auto x = r.origin().x() + t*r.direction().x();
-        auto z = r.origin().z() + t*r.direction().z();
-        if (x < x0 || x > x1 || z < z0 || z > z1)
+        auto x = ray.origin().x() + t*ray.direction().x();
+        auto z = ray.origin().z() + t*ray.direction().z();
+        if (x < x_min || x > x_max || z < z_min || z > z_max)
             return false;
-        rec.u = (x-x0)/(x1-x0);
-        rec.v = (z-z0)/(z1-z0);
-        rec.t = t;
-        auto outward_normal = vec3(0, 1, 0);
-        rec.normal = outward_normal;
-        rec.hitPoint = r.at(t);
+        hit_info.normal = vec3(0, 1, 0);
+        hit_info.hitPoint = ray.at(t);
         return true;
     }
 };

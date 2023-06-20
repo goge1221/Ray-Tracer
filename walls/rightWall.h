@@ -11,29 +11,25 @@
 class rightWall{
 
 public:
-    double y0{}, y1{}, z0{}, z1{}, k{};
+    double y_min{}, y_max{}, z_min{}, z_max{}, position_on_axis{};
+
+    rightWall(double yMin, double yMax, double zMin, double zMax, double positionOnAxis) : y_min(yMin), y_max(yMax),
+                                                                                           z_min(zMin), z_max(zMax),
+                                                                                           position_on_axis(
+                                                                                                   positionOnAxis) {}
+
     const double infinity = 1.79769e+308;
 
-    rightWall() = default;
-
-    rightWall(double _y0, double _y1, double _z0, double _z1, double _k)
-            : y0(_y0), y1(_y1), z0(_z0), z1(_z1), k(_k){};
-
-
-    bool hit(const ray& r, hit_information& rec) const {
-        auto t = (k-r.origin().x()) / r.direction().x();
+    bool hit(const ray& ray, hit_information& hit_info) const {
+        auto t = (position_on_axis-ray.origin().x()) / ray.direction().x();
         if (t < 0 || t > infinity)
             return false;
-        auto y = r.origin().y() + t*r.direction().y();
-        auto z = r.origin().z() + t*r.direction().z();
-        if (y < y0 || y > y1 || z < z0 || z > z1)
+        auto y = ray.origin().y() + t*ray.direction().y();
+        auto z = ray.origin().z() + t*ray.direction().z();
+        if (y < y_min || y > y_max || z < z_min || z > z_max)
             return false;
-        rec.u = (y-y0)/(y1-y0);
-        rec.v = (z-z0)/(z1-z0);
-        rec.t = t;
-        auto outward_normal = vec3(1, 0, 0);
-        rec.normal = outward_normal;
-        rec.hitPoint = r.at(t);
+        hit_info.normal = vec3(1, 0, 0);
+        hit_info.hitPoint = ray.at(t);
         return true;
     }
 };
