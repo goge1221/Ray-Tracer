@@ -7,6 +7,7 @@
 
 #include "tinyxml2.h"
 #include "../scene.h"
+#include "../objects/mesh.h"
 
 using namespace tinyxml2;
 
@@ -19,6 +20,7 @@ private:
     camera parse_camera_information(XMLElement *scene_element);
     std::vector<Sphere> parse_scene_objects(XMLElement *pElement);
     Light parse_light_information(XMLElement *sceneElement);
+    Mesh parse_mesh_informations(XMLElement *sceneElement);
 
 public:
     XMLParser();
