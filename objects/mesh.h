@@ -30,7 +30,7 @@ public:
     }
 
     bool square_hit(const ray &ray, hit_information &hit_info) {
-        if (bwall.hit(ray, hit_info) || rwall.hit(ray, hit_info) || boWall.hit(ray, hit_info))
+       if (bwall.hit(ray, hit_info) || rwall.hit(ray, hit_info) || boWall.hit(ray, hit_info))
             return true;
         return false;
     }
