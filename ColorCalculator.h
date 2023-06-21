@@ -66,8 +66,29 @@ private:
         }
 
 
-        if (mesh.square_hit(camera_ray, hitInformation))
-            return {1, 1,1 };
+        if (mesh.square_hit(camera_ray, hitInformation)) {
+            color finalColor(0, 0, 0);
+
+            finalColor += calculate_ambient_color(light, mesh.get_material());
+
+            if (light.hasPointLights()) {
+                color diffuse(0, 0, 0);
+                color specular(0, 0, 0);
+                for (int i = 0; i < 2; ++i) {
+                    diffuse += calculate_diffuse_component_point(light.getPointLightAtPosition(i).second,
+                                                                 hitInformation, mesh.get_material());
+                    specular += calculate_specular_component_point(light.getPointLightAtPosition(i).second,
+                                                                   light.getPointLightAtPosition(i).first,
+                                                                   hitInformation,
+                                                                   mesh.get_material(),
+                                                                   camera_ray);
+                }
+                finalColor += diffuse;
+                finalColor += specular;
+            }
+
+            return finalColor;
+        }
 
         return background_color;
     }

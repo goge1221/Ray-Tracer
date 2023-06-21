@@ -43,7 +43,7 @@ public:
         }
 
         hit_information.hitPoint = ray.at(root);
-        hit_information.normal = (hit_information.hitPoint - position) / radius;
+        hit_information.set_face_normal(ray, (hit_information.hitPoint - position) / radius);
         return true;
     }
 

@@ -25,7 +25,6 @@ public:
     void parse_vertices(const char *filePath) {
         OBJParser::loadOBJ(filePath, vertices);
 
-        bwall = behindWall(-5, 5, -2.5, 7.5, -10);
 
         initialize_walls();
     }
@@ -34,6 +33,10 @@ public:
         if (bwall.hit(ray, hit_info) || rwall.hit(ray, hit_info) || boWall.hit(ray, hit_info))
             return true;
         return false;
+    }
+
+    Material get_material() {
+        return material;
     }
 
     void set_material(Material &i_material) {

@@ -31,7 +31,7 @@ public:
         auto y = ray.origin().y() + t * ray.direction().y();
         if (x < x_min || x > x_max || y < y_min || y > y_max)
             return false;
-        hit_info.normal = vec3(0, 0, 1);
+        hit_info.set_face_normal(ray, vec3(0, 0, 1));
         hit_info.hitPoint = ray.at(t);
         return true;
     }
