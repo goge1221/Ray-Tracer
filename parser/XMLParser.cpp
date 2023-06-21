@@ -23,7 +23,7 @@ void XMLParser::load_xml_File(const std::string &path, Scene& scene) {
     std::vector<Sphere> scene_spheres = parse_scene_objects(scene_element);
     Light light = parse_light_information(scene_element);
 
-    Mesh mesh = parse_mesh_informations(scene_element);
+    Mesh mesh = parse_mesh_informations(path, scene_element);
     scene = Scene(background_color, camera, scene_spheres, light, mesh);
 }
 
@@ -50,7 +50,7 @@ camera XMLParser::parse_camera_information(XMLElement* scene_element){
     return cam;
 }
 
-Mesh XMLParser::parse_mesh_informations(tinyxml2::XMLElement *sceneElement) {
+Mesh XMLParser::parse_mesh_informations(const std::string& path, XMLElement *sceneElement) {
     XMLElement* surfaces_element = sceneElement->FirstChildElement("surfaces");
     if (!surfaces_element) return {};
 
@@ -61,7 +61,7 @@ Mesh XMLParser::parse_mesh_informations(tinyxml2::XMLElement *sceneElement) {
     mesh_element->QueryStringAttribute("name", &objName);
 
     Mesh v_mesh;
-    std::string scenesPath = "/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/";
+    std::string scenesPath = path.substr(0, path.size()-12);
     std::string completePath = scenesPath + std::string(objName);
     v_mesh.parse_vertices(completePath.c_str());
 

@@ -39,7 +39,7 @@ void load_element_from_filepath(const std::string &path) {
 
 int main() {
 
-    load_element_from_filepath("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/example4.xml");
+    load_element_from_filepath("/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/example3.xml");
 
 
 

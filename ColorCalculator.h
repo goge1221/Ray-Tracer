@@ -50,6 +50,7 @@ private:
                     color specular(0, 0, 0);
                     for (int i = 0; i < 2; ++i) {
                         diffuse += calculate_diffuse_component_point(light.getPointLightAtPosition(i).second,
+                                                                     light.getPointLightAtPosition(i).first,
                                                                      hitInformation, sphere.get_material());
 
                         bool castShadow = shouldCastShadowWithPointLight(hitInformation, light.getPointLightAtPosition(i).second, spheres, sphere);
@@ -79,7 +80,7 @@ private:
 
             if (light.hasPointLights()) {
                 for (int i = 0; i < 2; ++i) {
-                    color diffuse = calculate_diffuse_component_point(light.getPointLightAtPosition(i).second,
+                    color diffuse = calculate_diffuse_component_point(light.getPointLightAtPosition(i).second, light.getPointLightAtPosition(i).first,
                                                                  hitInformation, mesh.get_material());
 
                     finalColor += diffuse;
@@ -192,7 +193,7 @@ private:
 
 
     static color
-    calculate_diffuse_component_point(point3 lightPoint, const hit_information &hitInformation,
+    calculate_diffuse_component_point(point3 lightPoint, color lightColor, const hit_information &hitInformation,
                                       const Material &material) {
         vec3 lightVector = -normalize(hitInformation.hitPoint - lightPoint);
 
@@ -200,7 +201,7 @@ private:
         double Kd = dot(lightVector, hitInformation.normal);
         if (Kd < 0) Kd = 0;
 
-        return Kd * material.getKd() * material.getColor();
+        return Kd * material.getKd() * material.getColor() * lightColor;
     }
 
 
