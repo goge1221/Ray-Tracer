@@ -14,6 +14,8 @@ private:
     vec3 m_direction;
 
 public:
+
+    ray(){}
     ray(const point3& origin, const vec3& direction): m_origin(origin), m_direction(direction){}
 
     point3 origin() const  { return m_origin; }
