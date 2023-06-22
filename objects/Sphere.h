@@ -41,14 +41,14 @@ public:
             if (!root_is_in_range(root))
                 return false;
         }
-
+        hit_information.root = root;
         hit_information.hitPoint = ray.at(root);
         hit_information.set_face_normal(ray, (hit_information.hitPoint - position) / radius);
         return true;
     }
 
     bool root_is_in_range(double root) const {
-        return (root > 0 && root < infinity);
+        return (root > 0.001 && root < infinity);
     }
 
     bool operator==(const Sphere &otherSphere) const {
