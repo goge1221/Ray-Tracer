@@ -21,6 +21,8 @@ public:
 
 
 private:
+    constexpr static const double infinity = 1.79769e+308;
+
     static color
     ray_color(const ray &camera_ray, const std::vector<Sphere> &spheres, color background_color, Light light, Mesh mesh,
               int max_depth) {
@@ -29,18 +31,20 @@ private:
         if (max_depth == 0) return background_color;
 
         for (const auto &sphere: spheres) {
-            if (sphere.hit_by_ray(camera_ray, hitInformation)) {
+            if (sphere.hit_by_ray(camera_ray, hitInformation, infinity)) {
 
                 color reflected_color(0, 0, 0);
 
                 ray ray_to_trace = camera_ray;
 
                 if (sphere.get_material().getReflectance() > 0) {
-                    ray_to_trace = ray(hitInformation.hitPoint,
-                                       reflect_dir(normalize(camera_ray.direction()), hitInformation.normal));
+                    vec3 reflection_vector = reflect_dir(normalize(camera_ray.direction()), hitInformation.normal);
+                    ray_to_trace = ray(hitInformation.hitPoint, reflection_vector);
                     reflected_color = sphere.get_material().getReflectance() *
                                       ray_color(ray_to_trace, spheres, background_color, light, mesh, max_depth - 1);
                 }
+
+
                 color finalColor = calculate_ambient_color(light, sphere.get_material());
 
                 if (light.hasParallelLights()) {
@@ -80,12 +84,14 @@ private:
                     }
                     finalColor += diffuse;
                 }
+
                 // Return the sum of the ambient, diffuse, and specular components.
                 return finalColor * (1 - sphere.get_material().getReflectance()) + reflected_color;
             }
         }
+        hit_information hitInformationSquare;
 
-        if (mesh.square_hit(camera_ray, hitInformation)) {
+        if (mesh.square_hit(camera_ray, hitInformationSquare)) {
 
             color finalColor(0, 0, 0);
 
@@ -93,19 +99,18 @@ private:
 
             if (light.hasPointLights()) {
                 for (int i = 0; i < 2; ++i) {
-                    color diffuse = calculate_diffuse_component_point(light.getPointLightAtPosition(i).second,
-                                                                      light.getPointLightAtPosition(i).first,
-                                                                      hitInformation, mesh.get_material());
 
-                    finalColor += diffuse;
-                    bool hitByShadow = shouldCastShadowOnSquare(hitInformation, light.getPointLightAtPosition(i).second,
+                    bool hitByShadow = shouldCastShadowOnSquare(hitInformationSquare, light.getPointLightAtPosition(i).second,
                                                                 mesh, spheres);
-                    if (hitByShadow) {
-                        finalColor -= diffuse;
-                    } else {
+                    if (!hitByShadow) {
+                        color diffuse = calculate_diffuse_component_point(light.getPointLightAtPosition(i).second,
+                                                                          light.getPointLightAtPosition(i).first,
+                                                                          hitInformationSquare, mesh.get_material());
+                        finalColor += diffuse;
+
                         color specular = calculate_specular_component_point(light.getPointLightAtPosition(i).second,
                                                                             light.getPointLightAtPosition(i).first,
-                                                                            hitInformation,
+                                                                            hitInformationSquare,
                                                                             mesh.get_material(),
                                                                             camera_ray);
                         finalColor += specular;
@@ -131,7 +136,7 @@ private:
         hit_information hitInformationFromPoint;
         for (const auto &sphere1: spheres) {
             if (sphere1 == currentSphere) continue;
-            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint)) {
+            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint, infinity)) {
                 return true;
             }
         }
@@ -139,7 +144,7 @@ private:
     }
 
     static bool shouldCastShadowOnSquare(const hit_information &hitInformation, const point3 &lightPoint, Mesh &mesh,
-                                         std::vector<Sphere> spheres) {
+                                         const std::vector<Sphere>& spheres) {
         point3 positionOnSquare = hitInformation.hitPoint;
         vec3 lightVector = -normalize(hitInformation.hitPoint - lightPoint);
 
@@ -147,8 +152,8 @@ private:
 
         hit_information hitInformationFromPoint;
         for (Sphere sphere: spheres) {
-            if (sphere.hit_by_ray(fromPointOnSquareToLight, hitInformationFromPoint)) {
-                return true;
+            if (sphere.hit_by_ray(fromPointOnSquareToLight, hitInformationFromPoint, (hitInformation.hitPoint - lightPoint).length())) {
+                    return true;
             }
         }
 
@@ -166,7 +171,7 @@ private:
         hit_information hitInformationFromPoint;
         for (const auto &sphere1: spheres) {
             if (sphere1 == currentSphere) continue;
-            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint)) {
+            if (sphere1.hit_by_ray(fromPointOnSphereToLight, hitInformationFromPoint, infinity)) {
                 return true;
             }
         }
