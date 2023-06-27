@@ -40,13 +40,12 @@ public:
             if (!root_is_in_range(root, max_distance))
                 return false;
         }
-        hit_information.root = root;
         hit_information.hitPoint = ray.at(root);
         hit_information.set_face_normal(ray, (hit_information.hitPoint - position) / radius);
         return true;
     }
 
-    bool root_is_in_range(double root, double max_shadow_distance) const {
+    static bool root_is_in_range(double root, double max_shadow_distance) {
         return (root > 0.001 && root < max_shadow_distance);
     }
 

@@ -17,8 +17,6 @@ public:
             parseColor(materialElement, material);
             parsePhongElements(materialElement, material);
             parseReflectance(materialElement, material);
-            parseRefraction(materialElement, material);
-            parseTransmittance(materialElement, material);
         }
     }
 
@@ -55,24 +53,6 @@ private:
             reflectanceElement->QueryAttribute("r", &reflectance);
         }
         material.setReflectance(reflectance);
-    }
-
-    static void parseTransmittance(XMLElement *materialElement, Material &material) {
-        XMLElement* transmittanceElement = materialElement->FirstChildElement("transmittance");
-        double transmittance = 0.0;
-        if (transmittanceElement) {
-            transmittanceElement->QueryAttribute("t", &transmittance);
-        }
-        material.setTransmittance(transmittance);
-    }
-
-    static void parseRefraction(XMLElement *materialElement, Material &material) {
-        XMLElement* refractionElement = materialElement->FirstChildElement("refraction");
-        double iof = 0.0;
-        if (refractionElement) {
-            refractionElement->QueryAttribute("iof", &iof);
-        }
-        material.setRefraction(iof);
     }
 
 };

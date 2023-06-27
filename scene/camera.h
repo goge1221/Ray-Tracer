@@ -24,20 +24,12 @@ private:
     double viewport_height = 0.0;
     double viewport_width = 0.0;
     double pi = 3.1415926535897932385;
-    int max_bounces;
+    int max_bounces{};
 
 public:
 
     ray get_ray(double u, double v) const {
         return {camera_position, lower_left_corner + u * horizontal + v * vertical - camera_position};
-    }
-
-    void set_max_bounces(int v_max_bounces){
-        this->max_bounces = v_max_bounces;
-    }
-
-    int get_max_bounces() const{
-        return max_bounces;
     }
 
     void initialize_camera(double horizontal_res, double vertical_res) {
@@ -59,6 +51,15 @@ public:
         lower_left_corner = camera_position - horizontal / 2 - vertical / 2 - camera_to_look_at_vec;
     }
 
+
+    /* GETTERS & SETTERS */
+    void set_max_bounces(int v_max_bounces){
+        this->max_bounces = v_max_bounces;
+    }
+
+    int get_max_bounces() const{
+        return max_bounces;
+    }
 
     void set_position(point3 &received_camera_position) {
         camera_position = received_camera_position;

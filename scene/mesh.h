@@ -13,7 +13,6 @@
 class Mesh {
 
 private:
-    std::vector<vec3> vertices;
     Material material;
     behindWall bwall;
     rightWall rwall;
@@ -22,8 +21,9 @@ private:
 public:
 
     void parse_vertices(const char *filePath) {
+        std::vector<vec3>vertices;
         OBJParser::loadOBJ(filePath, vertices);
-        initialize_walls();
+        initialize_walls(vertices);
     }
 
     bool square_hit(const ray &ray, hit_information &hit_info) {
@@ -44,7 +44,7 @@ public:
 
 private:
 
-    void initialize_walls() {
+    void initialize_walls(const std::vector<vec3>& vertices) {
 
         int square_vertices_count_per_side = 4;
 
@@ -65,7 +65,7 @@ private:
                 rwall = rightWall(y_min, y_max, z_min, z_max, position_on_x_axis);
 
             } else if (are_numbers_the_same(firstVertex.y(), secondVertex.y(), thirdVertex.y(), fourthVertex.y())) {
-                //this is the bottom wall, y is the position and x and z are the positions
+                //this is the bottom wall, y is the position and x and z are the positions of the vertices
                 double x_min = get_minimum(firstVertex.x(), secondVertex.x(), thirdVertex.x(), fourthVertex.x());
                 double x_max = get_maximum(firstVertex.x(), secondVertex.x(), thirdVertex.x(), fourthVertex.x());
                 double z_min = get_minimum(firstVertex.z(), secondVertex.z(), thirdVertex.z(), fourthVertex.z());
