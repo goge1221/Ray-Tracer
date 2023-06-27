@@ -24,8 +24,6 @@ public:
 
     void parse_vertices(const char *filePath) {
         OBJParser::loadOBJ(filePath, vertices);
-
-
         initialize_walls();
     }
 
@@ -48,11 +46,14 @@ public:
 private:
 
     void initialize_walls() {
+
+        int square_vertices_count_per_side = 4;
+
         for (int i = 0; i < 3; ++i) {
-            vec3 firstVertex = vertices[0 + i * 4];
-            vec3 secondVertex = vertices[1 + i * 4];
-            vec3 thirdVertex = vertices[2 + i * 4];
-            vec3 fourthVertex = vertices[3 + i * 4];
+            vec3 firstVertex = vertices[0 + i * square_vertices_count_per_side];
+            vec3 secondVertex = vertices[1 + i * square_vertices_count_per_side];
+            vec3 thirdVertex = vertices[2 + i * square_vertices_count_per_side];
+            vec3 fourthVertex = vertices[3 + i * square_vertices_count_per_side];
 
             if (are_numbers_the_same(firstVertex.x(), secondVertex.x(), thirdVertex.x(), fourthVertex.x())) {
                 //find min y and min z and add x as a position
@@ -62,7 +63,7 @@ private:
                 double z_min = get_minimum(firstVertex.z(), secondVertex.z(), thirdVertex.z(), fourthVertex.z());
                 double z_max = get_maximum(firstVertex.z(), secondVertex.z(), thirdVertex.z(), fourthVertex.z());
                 double position_on_x_axis = firstVertex.x();
-                rwall = rightWall(y_min, y_max, z_min, z_max, position_on_x_axis);;
+                rwall = rightWall(y_min, y_max, z_min, z_max, position_on_x_axis);
 
             } else if (are_numbers_the_same(firstVertex.y(), secondVertex.y(), thirdVertex.y(), fourthVertex.y())) {
                 //this is the bottom wall, y is the position and x and z are the positions
@@ -71,7 +72,7 @@ private:
                 double z_min = get_minimum(firstVertex.z(), secondVertex.z(), thirdVertex.z(), fourthVertex.z());
                 double z_max = get_maximum(firstVertex.z(), secondVertex.z(), thirdVertex.z(), fourthVertex.z());
                 double position_on_x_axis = firstVertex.y();
-                boWall = bottomWall(x_min, x_max, z_min, z_max, position_on_x_axis);;
+                boWall = bottomWall(x_min, x_max, z_min, z_max, position_on_x_axis);
 
             } else {
                 //this is the behind wall
@@ -81,21 +82,40 @@ private:
                 double y_min = get_minimum(firstVertex.y(), secondVertex.y(), thirdVertex.y(), fourthVertex.y());
                 double y_max = get_maximum(firstVertex.y(), secondVertex.y(), thirdVertex.y(), fourthVertex.y());
                 double position_on_x_axis = firstVertex.z();
-                bwall = behindWall(x_min, x_max, y_min, y_max, position_on_x_axis);;
-
+                bwall = behindWall(x_min, x_max, y_min, y_max, position_on_x_axis);
             }
         }
     }
 
-    double get_maximum(double first, double second, double third, double fourth) {
-        return std::max({first, second, third, fourth});
+    static double get_maximum(double first, double second, double third, double fourth) {
+        double maximum = first;
+        if (second > maximum) {
+            maximum = second;
+        }
+        if (third > maximum) {
+            maximum = third;
+        }
+        if (fourth > maximum) {
+            maximum = fourth;
+        }
+        return maximum;
     }
 
-    double get_minimum(double first, double second, double third, double fourth) {
-        return std::min({first, second, third, fourth});
+    static double get_minimum(double first, double second, double third, double fourth) {
+        double minimum = first;
+        if (second < minimum) {
+            minimum = second;
+        }
+        if (third < minimum) {
+            minimum = third;
+        }
+        if (fourth < minimum) {
+            minimum = fourth;
+        }
+        return minimum;
     }
 
-    bool are_numbers_the_same(double first, double second, double third, double fourth) {
+    static bool are_numbers_the_same(double first, double second, double third, double fourth) {
         return (first == second) && (second == third) && (third == fourth);
     }
 
