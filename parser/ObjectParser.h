@@ -7,7 +7,6 @@
 
 
 #include <vector>
-#include "../objects/Sphere.h"
 #include "MaterialParser.h"
 
 class ObjectParser{

@@ -5,9 +5,6 @@
 #ifndef LAB_3_RIGHTWALL_H
 #define LAB_3_RIGHTWALL_H
 
-#include "../headers/ray.h"
-#include "../objects/hit_informations.h"
-
 class rightWall {
 
 public:

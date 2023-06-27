@@ -5,7 +5,7 @@
 #ifndef HIT_INFORMATIONS_H
 #define HIT_INFORMATIONS_H
 
-#include "../headers/ray.h"
+#include "../utils/ray.h"
 
 struct hit_information{
     point3 hitPoint;

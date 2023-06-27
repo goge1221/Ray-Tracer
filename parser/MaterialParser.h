@@ -5,8 +5,6 @@
 #ifndef MATERIALPARSER_H
 #define MATERIALPARSER_H
 
-#include "../objects/material.h"
-
 class MaterialParser {
 
 public:

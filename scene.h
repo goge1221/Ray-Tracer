@@ -7,10 +7,10 @@
 
 #include <utility>
 #include <vector>
-#include "headers/camera.h"
-#include "objects/Sphere.h"
-#include "objects/light.h"
-#include "objects/mesh.h"
+#include "scene/camera.h"
+#include "scene/Sphere.h"
+#include "scene/light.h"
+#include "scene/mesh.h"
 
 class Scene {
 

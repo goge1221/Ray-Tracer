@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include "headers/color.h"
-#include "headers/vec3.h"
-#include "headers/ray.h"
-#include "headers/camera.h"
+#include "utils/color.h"
+#include "utils/vec3.h"
+#include "utils/ray.h"
+#include "scene/camera.h"
 #include "parser/XMLParser.h"
 #include "ColorCalculator.h"
 
@@ -36,7 +36,7 @@ void load_element_from_filepath(const std::string &path) {
 
 int main() {
 
-    load_element_from_filepath(R"(C:\Users\goge\Desktop\Uni local\GFX\3\scenes\example4.xml)");
+    load_element_from_filepath(R"(/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/example5.xml)");
 
 
 

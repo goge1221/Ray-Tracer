@@ -5,10 +5,6 @@
 #ifndef LAB_3_BOTTOMWALL_H
 #define LAB_3_BOTTOMWALL_H
 
-
-#include "../headers/ray.h"
-#include "../objects/hit_informations.h"
-
 class bottomWall {
 
 public:

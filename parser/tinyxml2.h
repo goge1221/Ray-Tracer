@@ -318,14 +318,14 @@ private:
 
     T*  _mem;
     T   _pool[INITIAL_SIZE];
-    int _allocated;		// objects allocated
-    int _size;			// number objects in use
+    int _allocated;		// scene allocated
+    int _size;			// number scene in use
 };
 
 
 /*
 	Parent virtual class of a pool for fast allocation
-	and deallocation of objects.
+	and deallocation of scene.
 */
 class MemPool
 {
@@ -2047,7 +2047,7 @@ inline NodeType* XMLDocument::CreateUnlinkedNode( MemPoolT<PoolElementSize>& poo
 	XMLHandle handleCopy = handle;
 	@endverbatim
 
-	See also XMLConstHandle, which is the same as XMLHandle, but operates on const objects.
+	See also XMLConstHandle, which is the same as XMLHandle, but operates on const scene.
 */
 class TINYXML2_LIB XMLHandle
 {

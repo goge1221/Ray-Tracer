@@ -2439,7 +2439,7 @@ XMLError XMLDocument::Parse( const char* xml, size_t nBytes )
     Parse();
     if ( Error() ) {
         // clean up now essentially dangling memory.
-        // and the parse fail can put objects in the
+        // and the parse fail can put scene in the
         // pools that are dead and inaccessible.
         DeleteChildren();
         _elementPool.Clear();

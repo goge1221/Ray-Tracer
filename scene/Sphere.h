@@ -5,7 +5,7 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "../headers/vec3.h"
+#include "../utils/vec3.h"
 #include "material.h"
 #include "hit_informations.h"
 

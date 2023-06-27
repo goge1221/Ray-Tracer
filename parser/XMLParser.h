@@ -7,7 +7,6 @@
 
 #include "tinyxml2.h"
 #include "../scene.h"
-#include "../objects/mesh.h"
 
 using namespace tinyxml2;
 

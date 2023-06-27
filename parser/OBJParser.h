@@ -11,7 +11,6 @@
 #include <cstdio>
 #include <sstream>
 #include <string>
-#include "../headers/vec3.h"
 
 using namespace std;
 

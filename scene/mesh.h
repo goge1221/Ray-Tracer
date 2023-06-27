@@ -5,11 +5,10 @@
 #ifndef LAB_3_MESH_H
 #define LAB_3_MESH_H
 
-#include "../objectParser/OBJParser.h"
+#include "../parser/OBJParser.h"
 #include "../walls/behindWall.h"
 #include "../walls/rightWall.h"
 #include "../walls/bottomWall.h"
-#include <memory>
 
 class Mesh {
 

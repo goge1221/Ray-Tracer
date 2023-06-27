@@ -9,6 +9,10 @@
 #include "walls/behindWall.h"
 #include "walls/bottomWall.h"
 
+enum LightType{
+    PARALLEL, POINT
+};
+
 class ColorCalculator {
 
 public:
