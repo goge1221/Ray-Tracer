@@ -24,38 +24,42 @@ private:
 
 public:
     Scene() = default;
-    Scene(color background_color, camera cam, std::vector<Sphere> spheres, Light light, Mesh i_mesh)
-            : background_color(background_color), cam(cam), scene_spheres(std::move(spheres)), light(std::move(light)), mesh(std::move(i_mesh)) {}
 
-    int get_image_width(){
+    Scene(color background_color, camera cam, std::vector<Sphere> spheres, Light light, Mesh i_mesh)
+            : background_color(background_color), cam(cam), scene_spheres(std::move(spheres)), light(std::move(light)),
+              mesh(std::move(i_mesh)) {}
+
+    bool ray_hit_object_in_scene(){}
+
+    int get_image_width() {
         return static_cast<int>(cam.get_image_width());
     }
 
-    int get_image_height(){
+    int get_image_height() {
         return static_cast<int>(cam.get_image_height());
     }
 
-    ray get_camera_ray(double u, double v) const{
+    ray get_camera_ray(double u, double v) const {
         return cam.get_ray(u, v);
     }
 
-    int get_max_depth() const{
+    int get_max_depth() const {
         return cam.get_max_bounces();
     }
 
-    std::vector<Sphere> get_scene_spheres() const{
+    std::vector<Sphere> get_scene_spheres() const {
         return scene_spheres;
     }
 
-    Mesh get_mesh(){
+    Mesh get_mesh() {
         return mesh;
     }
 
-    color get_background_color() const{
+    color get_background_color() const {
         return background_color;
     }
 
-    Light get_light() const{
+    Light get_light() const {
         return light;
     }
 

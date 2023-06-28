@@ -19,6 +19,7 @@ public:
 
     static color get_color_for_pixel(Scene scene, double u, double v) {
         ray camera_ray = scene.get_camera_ray(u, v);
+
         return ray_color(camera_ray, scene.get_scene_spheres(), scene.get_background_color(), scene.get_light(),
                          scene.get_mesh(), scene.get_max_depth());
     }
