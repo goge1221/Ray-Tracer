@@ -36,16 +36,12 @@ void load_element_from_filepath(const std::string &path) {
 
 int main() {
 
-    load_element_from_filepath(R"(/Users/andreigoje/Desktop/Uni local/GFX/Lab3/scenes/example5.xml)");
-
-
-
-/*    std::cout << "Hello and welcome to the raytracing program of Andrei Goje 12032793\n";
+    std::cout << "Hello and welcome to the raytracing program of Andrei Goje 12032793\n";
     std::cout << "Enter the path to the XML file: ";
     std::string filePath;
     std::getline(std::cin, filePath);
     load_element_from_filepath(filePath);
     std::cout << filePath.substr(filePath.find_last_of('/') + 1, filePath.size() - 4);
-    std::cout << " outputted into the directory cmake-build-debug directory as a PPM file.\n"; */
+    std::cout << " outputted into the directory cmake-build-debug directory as a PPM file.\n";
 
 }

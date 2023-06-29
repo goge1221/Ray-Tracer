@@ -5,7 +5,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-class Light{
+class Light {
 
 public:
     const color &getAmbientLightColor() const {
@@ -24,16 +24,16 @@ public:
         Light::parallelLightColor = lightColor;
     }
 
-    void addPointLight(color lightColor, point3 lightPosition){
+    void addPointLight(color lightColor, point3 lightPosition) {
         pointLightColors.push_back(lightColor);
         pointLightPositions.push_back(lightPosition);
     }
 
-    bool hasPointLights(){
+    bool hasPointLights() {
         return !(pointLightPositions.empty() && pointLightColors.empty());
     }
 
-    std::pair<color, point3> getPointLightAtPosition(int position) const{
+    std::pair<color, point3> getPointLightAtPosition(int position) const {
         return {pointLightColors.at(position), pointLightPositions.at(position)};
     }
 
@@ -45,15 +45,15 @@ public:
         Light::parallelLightDirection = lightDirection;
     }
 
-    bool hasParallelLights(){
+    bool hasParallelLights() {
         vec3 undefined(0, 0, 0);
-        if (parallelLightColor == undefined && parallelLightDirection == undefined){
+        if (parallelLightColor == undefined && parallelLightDirection == undefined) {
             return false;
         }
         return true;
     }
 
-    std::size_t point_lights_size(){
+    std::size_t point_lights_size() {
         return pointLightPositions.size();
     }
 
