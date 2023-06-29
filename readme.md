@@ -23,6 +23,10 @@ If you encounter any issues, you can try the following steps:
     - `make`
 3. Once the build process completes, run the program normally as stated above.
 
+## Tested environments
+The program was developed in CLion on a macOS device. For testing I used the same macOS device, almighty and a Windows 11 computer.  
+
+
 ## Remarks
 - XML Parsing: The TinyXML library (cpp and h) were used for parsing XML files. You can find it at: [https://github.com/leethomason/tinyxml2](https://github.com/leethomason/tinyxml2).
 - Structure and Geometry: The structure of the code and the geometry calculations, including camera ray calculation and collision checking formulas, were inspired and adapted from the book "Ray Tracing in One Weekend," by Peter Shirley available at: [https://raytracing.github.io/books/RayTracingInOneWeekend.html](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
