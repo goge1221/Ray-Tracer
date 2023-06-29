@@ -9,7 +9,7 @@
 #include "walls/behindWall.h"
 #include "walls/bottomWall.h"
 
-enum LightType{
+enum LightType {
     PARALLEL, POINT
 };
 
@@ -53,14 +53,19 @@ private:
                 color finalColor = calculate_ambient_color(light, sphere.get_material());
 
                 if (light.hasParallelLights()) {
-                    color diffuse = calculate_diffuse_component(light.getParallelLightDirection(), light.getParallelLightColor(), hitInformation, sphere.get_material(), PARALLEL);
+                    color diffuse = calculate_diffuse_component(light.getParallelLightDirection(),
+                                                                light.getParallelLightColor(), hitInformation,
+                                                                sphere.get_material(), PARALLEL);
                     finalColor += diffuse;
 
-                    bool castShadow = shouldCastShadow(hitInformation, light.getParallelLightDirection(), spheres, sphere, PARALLEL);
+                    bool castShadow = shouldCastShadow(hitInformation, light.getParallelLightDirection(), spheres,
+                                                       sphere, PARALLEL);
                     if (castShadow) {
                         finalColor -= diffuse;
                     } else {
-                        color specular = calculate_specular_component(light.getParallelLightDirection(), light.getParallelLightColor(), hitInformation, sphere.get_material(),
+                        color specular = calculate_specular_component(light.getParallelLightDirection(),
+                                                                      light.getParallelLightColor(), hitInformation,
+                                                                      sphere.get_material(),
                                                                       ray_to_trace, PARALLEL);
                         finalColor += specular;
                     }
@@ -68,22 +73,22 @@ private:
 
                 if (light.hasPointLights()) {
                     color diffuse(0, 0, 0);
-                    for (int i = 0; i < 2; ++i) {
+                    for (int i = 0; i < light.point_lights_size(); ++i) {
                         diffuse += calculate_diffuse_component(light.getPointLightAtPosition(i).second,
-                                                                     light.getPointLightAtPosition(i).first,
-                                                                     hitInformation, sphere.get_material(), POINT);
+                                                               light.getPointLightAtPosition(i).first,
+                                                               hitInformation, sphere.get_material(), POINT);
 
                         bool castShadow = shouldCastShadow(hitInformation,
-                                                                         light.getPointLightAtPosition(i).second,
-                                                                         spheres, sphere, POINT);
+                                                           light.getPointLightAtPosition(i).second,
+                                                           spheres, sphere, POINT);
                         if (castShadow) {
                             finalColor -= diffuse;
                         } else {
                             finalColor += calculate_specular_component(light.getPointLightAtPosition(i).second,
-                                                                             light.getPointLightAtPosition(i).first,
-                                                                             hitInformation,
-                                                                             sphere.get_material(),
-                                                                             ray_to_trace, POINT);
+                                                                       light.getPointLightAtPosition(i).first,
+                                                                       hitInformation,
+                                                                       sphere.get_material(),
+                                                                       ray_to_trace, POINT);
                         }
 
                     }
@@ -105,20 +110,23 @@ private:
             if (light.hasPointLights()) {
                 for (int i = 0; i < 2; ++i) {
 
-                    bool hitByShadow = shouldCastShadow(hitInformationSquare, light.getPointLightAtPosition(i).second, spheres, spheres.at(0), POINT);
+                    bool hitByShadow = shouldCastShadowOnSquare(hitInformationSquare,
+                                                                light.getPointLightAtPosition(i).second,
+                                                                mesh, spheres);
                     if (!hitByShadow) {
                         color diffuse = calculate_diffuse_component(light.getPointLightAtPosition(i).second,
-                                                                          light.getPointLightAtPosition(i).first,
-                                                                          hitInformationSquare, mesh.get_material(), POINT);
+                                                                    light.getPointLightAtPosition(i).first,
+                                                                    hitInformationSquare, mesh.get_material(), POINT);
                         finalColor += diffuse;
 
                         color specular = calculate_specular_component(light.getPointLightAtPosition(i).second,
-                                                                            light.getPointLightAtPosition(i).first,
-                                                                            hitInformationSquare,
-                                                                            mesh.get_material(),
-                                                                            camera_ray, POINT);
+                                                                      light.getPointLightAtPosition(i).first,
+                                                                      hitInformationSquare,
+                                                                      mesh.get_material(),
+                                                                      camera_ray, POINT);
                         finalColor += specular;
                     }
+
 
                 }
             }
@@ -129,13 +137,32 @@ private:
         return background_color;
     }
 
+    static bool shouldCastShadowOnSquare(const hit_information &hitInformation, const point3 &lightPoint, Mesh &mesh,
+                                         const std::vector<Sphere> &spheres) {
+        point3 positionOnSquare = hitInformation.hitPoint;
+        vec3 lightVector = -normalize(hitInformation.hitPoint - lightPoint);
+
+        ray fromPointOnSquareToLight(positionOnSquare, lightVector);
+
+        hit_information hitInformationFromPoint;
+        for (Sphere sphere: spheres) {
+            if (sphere.hit_by_ray(fromPointOnSquareToLight, hitInformationFromPoint,
+                                  (hitInformation.hitPoint - lightPoint).length())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     static bool shouldCastShadow(const hit_information &hitInformation, const vec3 &light,
-                                 const std::vector<Sphere> &spheres, const Sphere &currentSphere, const LightType& lightType) {
+                                 const std::vector<Sphere> &spheres, const Sphere &currentSphere,
+                                 const LightType &lightType) {
         point3 positionOnSphere = hitInformation.hitPoint;
         vec3 lightVector = -normalize(light);
 
-        if (lightType == POINT){
+        if (lightType == POINT) {
             lightVector = -normalize(hitInformation.hitPoint - light);
         }
 
@@ -160,11 +187,12 @@ private:
     }
 
     static color
-    calculate_specular_component(const vec3 &light, const color& lightColor, const hit_information &hitInformation, const Material &material,
-                                 const ray &camera_ray, const LightType& lightType) {
+    calculate_specular_component(const vec3 &light, const color &lightColor, const hit_information &hitInformation,
+                                 const Material &material,
+                                 const ray &camera_ray, const LightType &lightType) {
 
         vec3 lightDir = normalize(light);
-        if (lightType == POINT){
+        if (lightType == POINT) {
             lightDir = normalize(hitInformation.hitPoint - light);
         }
 
@@ -178,9 +206,10 @@ private:
     }
 
     static color
-    calculate_diffuse_component(const vec3& light, const color& lightColor, const hit_information &hitInformation, const Material &material, const LightType& lightType) {
+    calculate_diffuse_component(const vec3 &light, const color &lightColor, const hit_information &hitInformation,
+                                const Material &material, const LightType &lightType) {
         vec3 lightVector = light;
-        if (lightType == POINT){
+        if (lightType == POINT) {
             lightVector = hitInformation.hitPoint - light;
         }
         // Calculate the direction of the light ray.

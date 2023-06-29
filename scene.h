@@ -27,9 +27,7 @@ public:
 
     Scene(color background_color, camera cam, std::vector<Sphere> spheres, Light light, Mesh i_mesh)
             : background_color(background_color), cam(cam), scene_spheres(std::move(spheres)), light(std::move(light)),
-              mesh(std::move(i_mesh)) {}
-
-    bool ray_hit_object_in_scene(){}
+              mesh(i_mesh) {}
 
     int get_image_width() {
         return static_cast<int>(cam.get_image_width());

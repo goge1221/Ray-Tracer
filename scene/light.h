@@ -53,6 +53,10 @@ public:
         return true;
     }
 
+    std::size_t point_lights_size(){
+        return pointLightPositions.size();
+    }
+
 private:
     color ambientLightColor;
     color parallelLightColor;
