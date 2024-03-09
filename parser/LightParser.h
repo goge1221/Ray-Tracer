@@ -4,7 +4,14 @@
 
 #ifndef LIGHTPARSER_H
 #define LIGHTPARSER_H
-
+/**
+ * @class LightParser
+ * @brief Responsible for parsing light related data from XML.
+ *
+ * This class is designed to interpret and extract light related settings or configurations
+ * stored in an XML format. It parses different kinds of light, Point lights, Parallel light and Ambient lights
+ * with their corresponding color.
+ */
 class LightParser {
 
 public:

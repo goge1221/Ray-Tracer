@@ -13,11 +13,26 @@
 #include <string>
 
 using namespace std;
-
+/**
+ * @class OBJLoader
+ * @brief Class for loading 3D models from OBJ files.
+ *
+ * This class provides functionalities to load vertex data from OBJ format files.
+ * It only processes vertices positions marked with 'v' in the file.
+ */
 class OBJParser {
 public:
     OBJParser() = default;
-
+    /**
+     * Loads vertex data from an OBJ file.
+     *
+     * This static method opens the specified OBJ file, reads its vertex data (positions),
+     * and stores them in the provided vector. It ignores all other types of data in the file.
+     *
+     * @param path The path to the OBJ file.
+     * @param vertices A reference to a vector of vec3 where vertex positions will be stored.
+     * @return true if the file is successfully loaded and processed, false otherwise.
+     */
     static bool loadOBJ(const char *path, std::vector<vec3> &vertices) {
 
         std::ifstream file(path);

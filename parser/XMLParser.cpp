@@ -7,7 +7,15 @@
 #include "CameraParser.h"
 #include "ObjectParser.h"
 #include "LightParser.h"
-
+/**
+ * Loads an XML file containing scene information and populates a Scene object with the parsed data.
+ * This method reads various components of the scene, such as background color, camera configuration,
+ * spheres (scene objects), lighting, and mesh information from the XML file and uses them to construct
+ * a Scene object.
+ *
+ * @param path The file path of the XML file to be loaded.
+ * @param scene Reference to a Scene object where the parsed scene information will be stored.
+ */
 void XMLParser::load_xml_File(const std::string &path, Scene& scene) {
 
     const char *filename = path.c_str();

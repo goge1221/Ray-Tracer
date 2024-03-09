@@ -4,7 +4,13 @@
 
 #ifndef MATERIALPARSER_H
 #define MATERIALPARSER_H
-
+/**
+ * @class MaterialParser
+ * @brief Responsible for parsing the material of a specific scene element from XML.
+ *
+ * This class parses the different material properties of scene elements, like their color, material, reflectance
+ * and refractance.
+ */
 class MaterialParser {
 
 public:

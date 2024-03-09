@@ -11,19 +11,20 @@
 class camera {
 
 private:
+    // Camera configuration variables
     point3 camera_position;
-    point3 lower_left_corner;
-    vec3 horizontal;
-    vec3 vertical;
-    vec3 up;
-    vec3 look_at;
-    double camera_angle = 40.0;
+    point3 lower_left_corner; // The lower left corner of the camera's viewport.
+    vec3 horizontal; // Vector defining the horizontal extent of the viewport.
+    vec3 vertical; // Vector defining the vertical extent of the viewport.
+    vec3 up; // Up direction for the camera, used to calculate orientation.
+    vec3 look_at; // Point the camera is looking at.
+    double camera_angle = 40.0; // Field of view angle of the camera.
     double image_width = 200;
     double image_height = 200;
     double aspect_ratio = 5.0;
-    double viewport_height = 0.0;
-    double viewport_width = 0.0;
-    double pi = 3.1415926535897932385;
+    double viewport_height = 0.0; // Calculated height of the camera's viewport.
+    double viewport_width = 0.0; // Calculated width of the camera's viewport.
+    double pi = 3.1415926535897932385; // Pi constant for angle conversions.
     int max_bounces{};
 
 public:

@@ -4,7 +4,14 @@
 
 #ifndef CAMERA_PARSER_H
 #define CAMERA_PARSER_H
-
+/**
+ * @class CameraParser
+ * @brief Responsible for parsing camera data from XML.
+ *
+ * This class is designed to interpret and extract camera settings or configurations
+ * stored in an XML format. It holds a pointer to the camera element within the XML
+ * structure from which it can retrieve necessary data.
+ */
 class CameraParser {
 
 private:
