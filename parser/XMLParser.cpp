@@ -28,7 +28,7 @@ void XMLParser::load_xml_File(const std::string &path, Scene& scene) {
 }
 
 std::string XMLParser::get_output_name() {
-    return outputName.substr(0, outputName.size()-4).append(".ppm");
+    return outputName.substr(0, outputName.size()-4).append(".png");
 }
 
 /* Parse the color and set it */
