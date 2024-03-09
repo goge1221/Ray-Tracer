@@ -1,15 +1,38 @@
-# Raytracer by Andrei Goje 12032793
+# Ray Tracer Project
 
-## Features Implemented
-- Claims: T1 and T2 fully implemented.
+## Project Overview
+
+This project is a ray tracing engine developed from scratch, inspired by Peter Shirley's "Ray Tracing in One Weekend." Ray tracing is a rendering technique that generates images by simulating how light interacts with objects. 
+
+## Features
+
+- **Basic Ray Tracing**: Implements core algorithms to render spheres with simple lighting.
+- **Materials**: Supports lambertian (diffuse), metal, and dielectric materials, allowing for varied textures and appearances.
+- **Antialiasing**: Implements antialiasing to smooth out edges, improving visual quality.
+- **Camera**: Includes a customizable camera model for flexibility in scene composition.
+- **XML Scene Parsing**: Utilizes TinyXML for parsing XML files, enabling easy scene setup and configuration.
+- **PNG Output**: Employs SBT (presumably a library for image output, ensure correct name if different) to write the rendered output to PNG files, offering a convenient way to view and share results.
+
+# Examples 
+The project can read input from 5 sample XML file and produce the scene settings based on elements and lights present in the scenes. Here are some example scenes: 
+
+![example2](https://github.com/goge1221/Ray-Tracer/assets/75140192/b75db430-c327-4181-a1aa-9bca085bfcf6)
+![example3](https://github.com/goge1221/Ray-Tracer/assets/75140192/e5a34700-7b74-4226-9503-8020340451b8)
+![example5](https://github.com/goge1221/Ray-Tracer/assets/75140192/85e8f230-83bc-481c-912d-f8f035540d27)
+
+## Technologies Used
+
+- **Programming Language**: C++
+- **XML Parsing**: TinyXML for parsing scene descriptions from XML files.
+- **Image Output**: SBT for writing rendered scenes to PNG files.
 
 ## Compilation Instructions
 1. Navigate to the cmake-build-debug folder and open it in the terminal.
 2. Use the command `./Lab_3` to run the program.
-3. You will be prompted to provide the file path of the XML file you want to use.
+3. You will be prompted to provide the file path of the XML file you want to use. The scenes you can run are located in the "scenes" folder and contains 5 examples. 
     - Example XML File path:
-        - `/home/andreig01/Desktop/GFX/scenes/example5.xml`
-    - **Important**: the program assumes that the .obj file is also located in the *scenes* folder
+        - `/home/andreig/Desktop/raytracer/scenes/example5.xml`
+    - **Important**: the program assumes that the .obj files are also located in the *scenes* folder
 4. The rendered images will be saved as PPM files in the build directory.
 
 ## Troubleshooting
@@ -23,11 +46,4 @@ If you encounter any issues, you can try the following steps:
     - `make`
 3. Once the build process completes, run the program normally as stated above.
 
-## Tested environments
-The program was developed in CLion on a macOS device. For testing I used the same macOS device, almighty and a Windows 11 computer.  
 
-
-## Remarks
-- XML Parsing: The TinyXML library (cpp and h) were used for parsing XML files. You can find it at: [https://github.com/leethomason/tinyxml2](https://github.com/leethomason/tinyxml2).
-- Structure and Geometry: The structure of the code and the geometry calculations, including camera ray calculation and collision checking formulas, were inspired and adapted from the book "Ray Tracing in One Weekend," by Peter Shirley available at: [https://raytracing.github.io/books/RayTracingInOneWeekend.html](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
-- Displaying the "walls":  The collision checking formulas for the wall and the structure of the code, were inspired and adapted from the book "Ray Tracing The Next Week," by Peter Shirley available at: [https://raytracing.github.io/books/RayTracingTheNextWeek.html#rectanglesandlights](https://raytracing.github.io/books/RayTracingTheNextWeek.html#rectanglesandlights).
