@@ -16,9 +16,11 @@ This project is a ray tracing engine developed from scratch, inspired by Peter S
 # Examples 
 The project can read input from 5 sample XML file and produce the scene settings based on elements and lights present in the scenes. Here are some example scenes: 
 
-![example2](https://github.com/goge1221/Ray-Tracer/assets/75140192/b75db430-c327-4181-a1aa-9bca085bfcf6)
-![example3](https://github.com/goge1221/Ray-Tracer/assets/75140192/e5a34700-7b74-4226-9503-8020340451b8)
-![example5](https://github.com/goge1221/Ray-Tracer/assets/75140192/85e8f230-83bc-481c-912d-f8f035540d27)
+<p align="center">
+  <img src="https://github.com/goge1221/Ray-Tracer/assets/75140192/b75db430-c327-4181-a1aa-9bca085bfcf6" alt="First Image" width="30%">
+  <img src="https://github.com/goge1221/Ray-Tracer/assets/75140192/e5a34700-7b74-4226-9503-8020340451b8" alt="Second Image" width="30%">
+  <img src="https://github.com/goge1221/Ray-Tracer/assets/75140192/85e8f230-83bc-481c-912d-f8f035540d27" alt="Third Image" width="30%">
+</p>
 
 ## Technologies Used
 
